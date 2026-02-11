@@ -167,7 +167,7 @@ export const defaultPortfolioData: PortfolioData = {
       id: "5",
       icon: "Sparkles",
       order: 5,
-      title": "Prompt Engineering Services",
+      title: "Prompt Engineering Services",
       features: [
         "Custom prompts",
         "Output optimization",
