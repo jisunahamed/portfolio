@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Home, User, FolderOpen, Briefcase, Mail, MessageSquare, 
-  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle
+import {
+  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -24,14 +23,15 @@ const loginSchema = z.object({
 
 const Admin = () => {
   const { user, isAdmin, isLoggedIn, isLoading, login, signUp, logout } = useAdminAuth();
-  const { 
-    data, 
+  const {
+    data,
     isLoaded,
     saveAllData,
-    exportData 
+    exportData,
+    importData
   } = usePortfolioData();
   const { toast } = useToast();
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -40,6 +40,31 @@ const Admin = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  const handleImportClick = () => {
+    document.getElementById('import-file')?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      if (content) {
+        const success = importData(content);
+        if (success) {
+          toast({ title: "Success", description: "Data imported successfully. Refreshing..." });
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          toast({ title: "Error", description: "Failed to import data. Invalid JSON.", variant: "destructive" });
+        }
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  };
 
   // Local draft state for editing
   const [draftData, setDraftData] = useState<PortfolioData | null>(null);
@@ -53,20 +78,20 @@ const Admin = () => {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate input
     const validation = loginSchema.safeParse({ email, password });
     if (!validation.success) {
-      toast({ 
-        title: "Validation Error", 
+      toast({
+        title: "Validation Error",
         description: validation.error.errors[0].message,
-        variant: "destructive" 
+        variant: "destructive"
       });
       return;
     }
 
     setAuthLoading(true);
-    
+
     if (isSignUp) {
       const { error } = await signUp(email, password);
       if (error) {
@@ -83,7 +108,7 @@ const Admin = () => {
         toast({ title: "Welcome!" });
       }
     }
-    
+
     setAuthLoading(false);
   };
 
@@ -182,11 +207,11 @@ const Admin = () => {
   // Save all changes
   const handleSave = async () => {
     if (!draftData || !hasChanges) return;
-    
+
     setIsSaving(true);
     try {
       const success = await saveAllData(draftData);
-      
+
       if (success) {
         setHasChanges(false);
         toast({ title: "Saved!", description: "All changes have been saved." });
@@ -222,8 +247,8 @@ const Admin = () => {
             {isSignUp ? "Create Admin Account" : "Admin Login"}
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground mb-6">
-            {isSignUp 
-              ? "Create an account to access the admin panel." 
+            {isSignUp
+              ? "Create an account to access the admin panel."
               : "Sign in to access the admin panel."}
           </p>
           <form onSubmit={handleAuth}>
@@ -333,15 +358,25 @@ const Admin = () => {
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
             <span className="hidden sm:inline text-xs text-muted-foreground">{user?.email}</span>
-            <Button 
-              onClick={handleSave} 
+            <Button
+              onClick={handleSave}
               disabled={!hasChanges || isSaving}
               className="bg-green-600 hover:bg-green-700"
             >
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? "Saving..." : "Save"}
             </Button>
-            <Button variant="outline" size="icon" onClick={exportData} className="hidden sm:flex">
+            <input
+              type="file"
+              id="import-file"
+              className="hidden"
+              accept=".json"
+              onChange={handleFileChange}
+            />
+            <Button variant="outline" size="icon" onClick={handleImportClick} className="hidden sm:flex" title="Import JSON">
+              <Upload className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={exportData} className="hidden sm:flex" title="Export JSON">
               <Download className="w-4 h-4" />
             </Button>
             <Button variant="ghost" size="icon" onClick={logout}><LogOut className="w-4 h-4" /></Button>
@@ -438,13 +473,13 @@ const Admin = () => {
                     <label className="text-sm text-muted-foreground">Mission</label>
                     <Textarea value={draftData.about.mission} onChange={(e) => updateDraftAbout({ ...draftData.about, mission: e.target.value })} rows={4} />
                   </div>
-                  
+
                   {/* Skills Management */}
                   <div className="pt-4 border-t border-border">
                     <div className="flex items-center justify-between mb-3">
                       <label className="text-sm font-medium">Skills</label>
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         variant="outline"
                         onClick={() => {
                           const newSkill = {
@@ -453,9 +488,9 @@ const Admin = () => {
                             icon: "Sparkles",
                             color: "primary"
                           };
-                          updateDraftAbout({ 
-                            ...draftData.about, 
-                            skills: [...draftData.about.skills, newSkill] 
+                          updateDraftAbout({
+                            ...draftData.about,
+                            skills: [...draftData.about.skills, newSkill]
                           });
                         }}
                       >
@@ -465,24 +500,24 @@ const Admin = () => {
                     <div className="space-y-3">
                       {draftData.about.skills.map((skill, index) => (
                         <div key={skill.id} className="flex items-center gap-2 p-2 border border-border rounded-lg">
-                          <Input 
-                            value={skill.name} 
+                          <Input
+                            value={skill.name}
                             onChange={(e) => {
                               const newSkills = [...draftData.about.skills];
                               newSkills[index] = { ...skill, name: e.target.value };
                               updateDraftAbout({ ...draftData.about, skills: newSkills });
-                            }} 
-                            placeholder="Skill name" 
+                            }}
+                            placeholder="Skill name"
                             className="flex-1"
                           />
-                          <Input 
-                            value={skill.icon} 
+                          <Input
+                            value={skill.icon}
                             onChange={(e) => {
                               const newSkills = [...draftData.about.skills];
                               newSkills[index] = { ...skill, icon: e.target.value };
                               updateDraftAbout({ ...draftData.about, skills: newSkills });
-                            }} 
-                            placeholder="Icon (e.g., Cpu, Globe)" 
+                            }}
+                            placeholder="Icon (e.g., Cpu, Globe)"
                             className="w-32"
                           />
                           <select
@@ -498,8 +533,8 @@ const Admin = () => {
                             <option value="secondary">Secondary</option>
                             <option value="accent">Accent</option>
                           </select>
-                          <Button 
-                            variant="destructive" 
+                          <Button
+                            variant="destructive"
                             size="icon"
                             onClick={() => {
                               const newSkills = draftData.about.skills.filter((_, i) => i !== index);
@@ -517,8 +552,8 @@ const Admin = () => {
                   <div className="pt-4 border-t border-border">
                     <div className="flex items-center justify-between mb-3">
                       <label className="text-sm font-medium">Stats</label>
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         variant="outline"
                         onClick={() => {
                           const newStats = [...draftData.about.stats, { label: "New Stat", value: "0+" }];
@@ -531,28 +566,28 @@ const Admin = () => {
                     <div className="space-y-3">
                       {draftData.about.stats.map((stat, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 border border-border rounded-lg">
-                          <Input 
-                            value={stat.value} 
+                          <Input
+                            value={stat.value}
                             onChange={(e) => {
                               const newStats = [...draftData.about.stats];
                               newStats[index] = { ...stat, value: e.target.value };
                               updateDraftAbout({ ...draftData.about, stats: newStats });
-                            }} 
-                            placeholder="Value (e.g., 5+)" 
+                            }}
+                            placeholder="Value (e.g., 5+)"
                             className="w-24"
                           />
-                          <Input 
-                            value={stat.label} 
+                          <Input
+                            value={stat.label}
                             onChange={(e) => {
                               const newStats = [...draftData.about.stats];
                               newStats[index] = { ...stat, label: e.target.value };
                               updateDraftAbout({ ...draftData.about, stats: newStats });
-                            }} 
-                            placeholder="Label (e.g., Years Experience)" 
+                            }}
+                            placeholder="Label (e.g., Years Experience)"
                             className="flex-1"
                           />
-                          <Button 
-                            variant="destructive" 
+                          <Button
+                            variant="destructive"
                             size="icon"
                             onClick={() => {
                               const newStats = draftData.about.stats.filter((_, i) => i !== index);
@@ -597,8 +632,8 @@ const Admin = () => {
                         <Input value={project.tags.join(", ")} onChange={(e) => updateDraftProject(project.id, { tags: e.target.value.split(",").map(t => t.trim()) })} placeholder="Tags (comma separated)" />
                         <div className="flex items-center gap-2">
                           <label className="text-sm text-muted-foreground">Status:</label>
-                          <select 
-                            value={project.status} 
+                          <select
+                            value={project.status}
                             onChange={(e) => updateDraftProject(project.id, { status: e.target.value as "published" | "draft" })}
                             className="bg-background border border-border rounded px-2 py-1 text-sm"
                           >
@@ -645,7 +680,7 @@ const Admin = () => {
               <div className="space-y-4 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <h2 className="text-lg sm:text-xl font-bold">FAQ Section</h2>
-                  <Button 
+                  <Button
                     onClick={() => {
                       if (!draftData) return;
                       const newCategory: FAQCategory = {
@@ -666,8 +701,8 @@ const Admin = () => {
                   {(draftData.faq || []).map((cat, catIndex) => (
                     <div key={cat.id} className="p-3 sm:p-4 border border-border rounded-xl space-y-3">
                       <div className="flex items-center gap-3">
-                        <Input 
-                          value={cat.category} 
+                        <Input
+                          value={cat.category}
                           onChange={(e) => {
                             const newFaq = [...draftData.faq];
                             newFaq[catIndex] = { ...cat, category: e.target.value };
@@ -677,8 +712,8 @@ const Admin = () => {
                           placeholder="Category name"
                           className="flex-1"
                         />
-                        <Input 
-                          value={cat.icon} 
+                        <Input
+                          value={cat.icon}
                           onChange={(e) => {
                             const newFaq = [...draftData.faq];
                             newFaq[catIndex] = { ...cat, icon: e.target.value };
@@ -688,8 +723,8 @@ const Admin = () => {
                           placeholder="Icon (e.g., HelpCircle)"
                           className="w-36"
                         />
-                        <Button 
-                          variant="destructive" 
+                        <Button
+                          variant="destructive"
                           size="icon"
                           onClick={() => {
                             const newFaq = draftData.faq.filter((_, i) => i !== catIndex);
@@ -706,8 +741,8 @@ const Admin = () => {
                           <div key={qIndex} className="space-y-2 p-2 bg-muted/30 rounded-lg">
                             <div className="flex items-start gap-2">
                               <div className="flex-1 space-y-2">
-                                <Input 
-                                  value={q.question} 
+                                <Input
+                                  value={q.question}
                                   onChange={(e) => {
                                     const newFaq = [...draftData.faq];
                                     const newQuestions = [...cat.questions];
@@ -718,8 +753,8 @@ const Admin = () => {
                                   }}
                                   placeholder="Question"
                                 />
-                                <Textarea 
-                                  value={q.answer} 
+                                <Textarea
+                                  value={q.answer}
                                   onChange={(e) => {
                                     const newFaq = [...draftData.faq];
                                     const newQuestions = [...cat.questions];
@@ -732,8 +767,8 @@ const Admin = () => {
                                   rows={2}
                                 />
                               </div>
-                              <Button 
-                                variant="destructive" 
+                              <Button
+                                variant="destructive"
                                 size="icon"
                                 onClick={() => {
                                   const newFaq = [...draftData.faq];
@@ -748,8 +783,8 @@ const Admin = () => {
                             </div>
                           </div>
                         ))}
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           size="sm"
                           onClick={() => {
                             const newFaq = [...draftData.faq];
