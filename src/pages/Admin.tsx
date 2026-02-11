@@ -349,7 +349,9 @@ const Admin = () => {
             <Link to="/" className="text-muted-foreground hover:text-primary">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-lg sm:text-xl font-bold">Admin Panel</h1>
+            <h1 className="text-lg sm:text-xl font-bold">
+              Admin Panel <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full ml-2">v1.1</span>
+            </h1>
             {hasChanges && (
               <span className="text-xs bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full">
                 Unsaved changes
