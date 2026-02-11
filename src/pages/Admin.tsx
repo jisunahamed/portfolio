@@ -373,10 +373,10 @@ const Admin = () => {
               accept=".json"
               onChange={handleFileChange}
             />
-            <Button variant="outline" size="icon" onClick={handleImportClick} className="hidden sm:flex" title="Import JSON">
+            <Button variant="outline" size="icon" onClick={handleImportClick} title="Import JSON">
               <Upload className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={exportData} className="hidden sm:flex" title="Export JSON">
+            <Button variant="outline" size="icon" onClick={exportData} title="Export JSON">
               <Download className="w-4 h-4" />
             </Button>
             <Button variant="ghost" size="icon" onClick={logout}><LogOut className="w-4 h-4" /></Button>
