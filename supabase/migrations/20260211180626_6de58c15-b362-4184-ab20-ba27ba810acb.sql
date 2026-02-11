@@ -1,0 +1,1 @@
+ALTER TABLE public.portfolio_data ADD COLUMN IF NOT EXISTS faq jsonb NOT NULL DEFAULT '[]'::jsonb;
