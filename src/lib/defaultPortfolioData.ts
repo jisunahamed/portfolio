@@ -202,30 +202,30 @@ export const defaultPortfolioData: PortfolioData = {
       {
         id: "2",
         url: "https://linkedin.com",
-        icon": "Linkedin",
+        icon: "Linkedin",
         visible: true,
         platform: "LinkedIn"
       },
       {
         id: "3",
         url: "https://twitter.com",
-        icon": "Twitter",
+        icon: "Twitter",
         visible: true,
         platform: "Twitter"
       },
       {
         id: "4",
         url: "https://facebook.com",
-        icon": "Facebook",
-        visible": false,
-        platform": "Facebook"
+        icon: "Facebook",
+        visible: false,
+        platform: "Facebook"
       },
       {
         id: "5",
         url: "https://wa.me/",
-        icon": "MessageCircle",
-        visible": false,
-        platform": "WhatsApp"
+        icon: "MessageCircle",
+        visible: false,
+        platform: "WhatsApp"
       }
     ]
   },
