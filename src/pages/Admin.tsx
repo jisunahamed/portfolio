@@ -373,8 +373,9 @@ const Admin = () => {
               accept=".json"
               onChange={handleFileChange}
             />
-            <Button variant="outline" size="icon" onClick={handleImportClick} title="Import JSON">
-              <Upload className="w-4 h-4" />
+            <Button variant="outline" onClick={handleImportClick} title="Import JSON">
+              <Upload className="w-4 h-4 mr-2" />
+              Import
             </Button>
             <Button variant="outline" size="icon" onClick={exportData} title="Export JSON">
               <Download className="w-4 h-4" />
