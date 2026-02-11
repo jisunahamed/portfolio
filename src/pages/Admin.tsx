@@ -22,6 +22,7 @@ const loginSchema = z.object({
 });
 
 const Admin = () => {
+  // Force deployment: 2026-02-12T02:05:00
   const { user, isAdmin, isLoggedIn, isLoading, login, signUp, logout } = useAdminAuth();
   const {
     data,
