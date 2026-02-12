@@ -18,9 +18,6 @@ const Navigation = () => {
   const { data, isLoaded } = usePortfolioDataReadOnly();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data, isLoaded } = usePortfolioDataReadOnly();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
