@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare, Building2, FileJson
+  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare, Building2, FileJson, Eye, EyeOff
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { PortfolioData, Project, Service, SocialLink, FAQQuestion, FAQCategory, Client } from "@/lib/portfolioTypes";
+import { PortfolioData, Project, Service, SocialLink, FAQQuestion, FAQCategory, Client, HeroData, AboutData, ContactData, ChatSettings, FooterData } from "@/lib/portfolioTypes";
 
 type Tab = "hero" | "about" | "projects" | "services" | "contact" | "chat" | "footer" | "faq";
 
@@ -326,6 +326,7 @@ const Admin = () => {
     { id: "contact", label: "Contact", icon: Mail },
     { id: "chat", label: "Chat Settings", icon: MessageSquare },
     { id: "footer", label: "Footer", icon: Settings },
+    { id: "clients", label: "Clients", icon: Building2 },
   ];
 
   const handleTabClick = (tabId: Tab) => {
@@ -818,6 +819,96 @@ const Admin = () => {
                   <div>
                     <label className="text-sm text-muted-foreground">Location</label>
                     <Input value={draftData.contact.location} onChange={(e) => updateDraftContact({ ...draftData.contact, location: e.target.value })} />
+                  </div>
+
+                  {/* Social Links Management */}
+                  <div className="pt-4 border-t border-border mt-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <label className="text-sm font-medium">Social Profiles</label>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const newLink: SocialLink = {
+                            id: Date.now().toString(),
+                            platform: "New Profile",
+                            url: "https://",
+                            icon: "Globe",
+                            visible: true
+                          };
+                          updateDraftContact({
+                            ...draftData.contact,
+                            socialLinks: [...draftData.contact.socialLinks, newLink]
+                          });
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-1" /> Add Profile
+                      </Button>
+                    </div>
+                    <div className="space-y-3">
+                      {draftData.contact.socialLinks.map((link, index) => (
+                        <div key={link.id} className="flex flex-col gap-3 p-3 border border-border rounded-lg bg-muted/10">
+                          <div className="flex gap-2">
+                            <div className="flex-1">
+                              <Input
+                                value={link.platform}
+                                onChange={(e) => {
+                                  const newLinks = [...draftData.contact.socialLinks];
+                                  newLinks[index] = { ...link, platform: e.target.value };
+                                  updateDraftContact({ ...draftData.contact, socialLinks: newLinks });
+                                }}
+                                placeholder="Platform Name"
+                              />
+                            </div>
+                            <div className="w-1/3">
+                              <Input
+                                value={link.icon}
+                                onChange={(e) => {
+                                  const newLinks = [...draftData.contact.socialLinks];
+                                  newLinks[index] = { ...link, icon: e.target.value };
+                                  updateDraftContact({ ...draftData.contact, socialLinks: newLinks });
+                                }}
+                                placeholder="Icon (Github, Twitter...)"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex gap-2 items-center">
+                            <Input
+                              value={link.url}
+                              onChange={(e) => {
+                                const newLinks = [...draftData.contact.socialLinks];
+                                newLinks[index] = { ...link, url: e.target.value };
+                                updateDraftContact({ ...draftData.contact, socialLinks: newLinks });
+                              }}
+                              placeholder="Profile URL"
+                              className="flex-1"
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => {
+                                const newLinks = [...draftData.contact.socialLinks];
+                                newLinks[index] = { ...link, visible: !link.visible };
+                                updateDraftContact({ ...draftData.contact, socialLinks: newLinks });
+                              }}
+                              title={link.visible ? "Hide" : "Show"}
+                            >
+                              {link.visible ? <Eye className="w-4 h-4 text-green-400" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              onClick={() => {
+                                const newLinks = draftData.contact.socialLinks.filter((_, i) => i !== index);
+                                updateDraftContact({ ...draftData.contact, socialLinks: newLinks });
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

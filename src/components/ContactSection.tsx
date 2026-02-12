@@ -9,6 +9,9 @@ import {
   Facebook,
   MessageCircle,
   Sparkles,
+  Instagram,
+  Youtube,
+  Globe,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -20,6 +23,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Twitter,
   Facebook,
   MessageCircle,
+  Instagram,
+  Youtube,
+  Globe,
 };
 
 const ContactSection = () => {
