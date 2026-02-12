@@ -36,27 +36,12 @@ const ContactSection = () => {
   const [serviceType, setServiceType] = useState("n8n Automation");
   const [budgetRange, setBudgetRange] = useState("$500 - $1k");
 
-  const handleSmartContact = () => {
-    const email = contact?.email || "jisunahamed525@gmail.com";
-    const subject = encodeURIComponent(`Inquiry: ${serviceType} Project`);
-    const bodyContent = `Hi Jisun,\n\nI'm interested in a ${serviceType} project.\nBudget Range: ${budgetRange}\n\nContext:\n[Describe your automation needs here]`;
-    const body = encodeURIComponent(bodyContent);
 
-    // Create a temporary link element to trigger the mailto
-    // This is often more reliable than window.location.href or window.open
-    const link = document.createElement('a');
-    link.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <section id="contact" aria-labelledby="contact-heading" className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-t from-surface-glass/50 to-transparent" aria-hidden="true" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-gradient-radial from-primary/10 via-transparent to-transparent rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
@@ -123,10 +108,12 @@ const ContactSection = () => {
               <Button
                 size="lg"
                 className="w-full text-base py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow"
-                onClick={handleSmartContact}
+                asChild
               >
-                <Send className="w-5 h-5 mr-2" />
-                Compose Email Request
+                <a href={`mailto:${contact?.email || "jisunahamed525@gmail.com"}?subject=${encodeURIComponent(`Inquiry: ${serviceType} Project`)}&body=${encodeURIComponent(`Hi Jisun,\n\nI'm interested in a ${serviceType} project.\nBudget Range: ${budgetRange}\n\nContext:\n[Describe your automation needs here]`)}`}>
+                  <Send className="w-5 h-5 mr-2" />
+                  Compose Email Request
+                </a>
               </Button>
               <p className="text-xs text-center text-muted-foreground">
                 Opens your default email client with a pre-filled template.
