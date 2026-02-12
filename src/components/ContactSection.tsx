@@ -8,7 +8,9 @@ import {
   Send,
   Facebook,
   MessageCircle,
+  Sparkles,
 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 
@@ -25,6 +27,15 @@ const ContactSection = () => {
   const { contact } = data;
   const visibleSocialLinks = contact.socialLinks.filter((s) => s.visible);
 
+  const [serviceType, setServiceType] = useState("n8n Automation");
+  const [budgetRange, setBudgetRange] = useState("$500 - $1k");
+
+  const handleSmartContact = () => {
+    const subject = `Inquiry: ${serviceType} Project`;
+    const body = `Hi Jisun,%0D%0A%0D%0AI'm interested in a ${serviceType} project.%0D%0ABudget Range: ${budgetRange}%0D%0A%0D%0AContext:%0D%0A[Describe your automation needs here]`;
+    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
+  };
+
   return (
     <section id="contact" aria-labelledby="contact-heading" className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
       {/* Background */}
@@ -38,128 +49,133 @@ const ContactSection = () => {
             Get In Touch
           </span>
           <h2 id="contact-heading" className="section-heading mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl">
-            Contact <span className="text-gradient">Jisun Ahamed</span> for AI Automation Solutions
+            Start Your <span className="text-gradient">Automation</span> Journey
           </h2>
           <p className="text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base px-2">
-            Ready to automate your workflows with <strong>AI automation</strong> and <strong>n8n</strong>? I'm always excited to discuss new projects and opportunities.
+            Skip the back-and-forth. Tell me what you need, and let's get building.
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6 md:gap-12">
-            {/* Contact Info */}
-            <div className="space-y-5 sm:space-y-8 order-2 md:order-1">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-                  Let's Build Something Amazing with <strong>AI Automation</strong>
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  Whether you need a complex <strong>n8n workflow automation</strong>, <strong>custom chatbot development</strong>, or just want to chat about the possibilities of AI,
-                  I'm here to help. Drop me a message and let's explore how we can work together.
-                </p>
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+
+          {/* Left: Smart Form */}
+          <div className="glass-card p-6 sm:p-8 rounded-2xl border border-primary/20 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-primary animate-pulse" />
+
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              Quick Inquiry
+            </h3>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">I need help with...</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['n8n Automation', 'Chatbot', 'Data Scraping', 'Integration'].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setServiceType(type)}
+                      className={`p-3 rounded-lg text-sm border transition-all text-left ${serviceType === type
+                        ? 'bg-primary/20 border-primary text-primary font-medium'
+                        : 'bg-white/5 border-white/10 hover:border-white/20'
+                        }`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Contact Details */}
-              <address className="space-y-3 sm:space-y-4 not-italic">
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 glass-card rounded-xl hover:border-primary/50 transition-colors group active:scale-[0.98]"
-                >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium text-sm sm:text-base truncate">{contact.email}</p>
-                  </div>
-                </a>
-
-                <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 glass-card rounded-xl">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-secondary/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Location</p>
-                    <p className="font-medium text-sm sm:text-base truncate">{contact.location}</p>
-                  </div>
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">Estimated Budget</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['<$500', '$500 - $1k', '$1k+'].map((range) => (
+                    <button
+                      key={range}
+                      onClick={() => setBudgetRange(range)}
+                      className={`p-2 rounded-lg text-sm border transition-all ${budgetRange === range
+                        ? 'bg-secondary/20 border-secondary text-secondary font-medium'
+                        : 'bg-white/5 border-white/10 hover:border-white/20'
+                        }`}
+                    >
+                      {range}
+                    </button>
+                  ))}
                 </div>
-              </address>
+              </div>
 
-              {/* Social Links */}
-              {visibleSocialLinks.length > 0 && (
-                <nav aria-label="Social media links">
-                  <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">Find me on</p>
-                  <div className="flex gap-3 sm:gap-4 flex-wrap">
-                    {visibleSocialLinks.map((social) => {
-                      const IconComponent = iconMap[social.icon] || Github;
-                      return (
-                        <motion.a
-                          key={social.id}
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ y: -3, scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl glass-card flex items-center justify-center hover:border-primary/50 transition-colors group active:scale-95"
-                          aria-label={`Follow Jisun Ahamed on ${social.icon}`}
-                          title={`Jisun Ahamed on ${social.icon}`}
-                        >
-                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
-                        </motion.a>
-                      );
-                    })}
-                  </div>
-                </nav>
-              )}
+              <Button
+                size="lg"
+                className="w-full text-base py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow"
+                onClick={handleSmartContact}
+              >
+                <Send className="w-5 h-5 mr-2" />
+                Compose Email Request
+              </Button>
+              <p className="text-xs text-center text-muted-foreground">
+                Opens your default email client with a pre-filled template.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Direct Contact & Social */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold">Prefer a direct approach?</h3>
+              <p className="text-muted-foreground">
+                You can always reach me directly via email or social media. I typically respond within 12 hours.
+              </p>
             </div>
 
-            {/* CTA Card */}
-            <div className="order-1 md:order-2">
-              <div className="glass-card rounded-xl sm:rounded-2xl p-5 sm:p-8 glow-border h-full flex flex-col justify-center">
-                <div className="text-center space-y-4 sm:space-y-6">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <Send className="w-7 h-7 sm:w-10 sm:h-10 text-primary" aria-hidden="true" />
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold mb-1.5 sm:mb-2">Quick Chat</h3>
-                    <p className="text-muted-foreground text-xs sm:text-sm">
-                      Use the AI chat assistant to get instant answers about <strong>AI automation services</strong> or schedule a call.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3 sm:space-y-4">
-                    <Button
-                      variant="hero"
-                      size="lg"
-                      className="w-full text-sm sm:text-base py-5 sm:py-6"
-                      onClick={() => {
-                        const chatButton = document.querySelector(
-                          "[data-chat-trigger]"
-                        ) as HTMLButtonElement;
-                        if (chatButton) chatButton.click();
-                      }}
-                      aria-label="Start a conversation about AI automation"
-                    >
-                      Start a Conversation
-                    </Button>
-                    <Button
-                      variant="glow"
-                      size="lg"
-                      className="w-full text-sm sm:text-base py-5 sm:py-6"
-                      asChild
-                    >
-                      <a href={`mailto:${contact.email}`} aria-label="Send email to Jisun Ahamed">Send Email</a>
-                    </Button>
-                  </div>
-
-                  <p className="text-[10px] sm:text-xs text-muted-foreground">
-                    Typically respond within 24 hours
-                  </p>
+            <div className="space-y-4">
+              <a
+                href={`mailto:${contact.email}`}
+                className="flex items-center gap-4 p-4 glass-card rounded-xl hover:bg-white/5 transition-colors group"
+              >
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <Mail className="w-5 h-5 text-primary" />
                 </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Email Me</p>
+                  <p className="font-medium">{contact.email}</p>
+                </div>
+              </a>
+
+              <div className="flex items-center gap-4 p-4 glass-card rounded-xl">
+                <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Based in</p>
+                  <p className="font-medium">{contact.location}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-4">Connect on Socials</p>
+              <div className="flex gap-4">
+                {visibleSocialLinks.map((social) => {
+                  const IconComponent = iconMap[social.icon] || Github;
+                  return (
+                    <motion.a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ y: -3, scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-12 h-12 rounded-xl glass-card flex items-center justify-center hover:border-primary/50 transition-colors text-muted-foreground hover:text-primary"
+                    >
+                      <IconComponent className="w-5 h-5" />
+                    </motion.a>
+                  );
+                })}
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
