@@ -28,7 +28,7 @@ const HeroSection = () => {
     <section
       id="home"
       aria-labelledby="hero-heading"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden gradient-bg pt-20"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden gradient-bg pt-24 sm:pt-32"
     >
       {/* Node Network Background */}
       <ParticleBackground />

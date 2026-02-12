@@ -89,7 +89,7 @@ const ContactSection = () => {
 
               <div className="space-y-2">
                 <label className="text-sm text-muted-foreground">Estimated Budget</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {['<$500', '$500 - $1k', '$1k+'].map((range) => (
                     <button
                       key={range}
