@@ -14,7 +14,7 @@ interface Message {
 const ChatWidget = () => {
   const { data, isLoaded } = usePortfolioDataReadOnly();
   const { chatSettings, hero } = data;
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -127,14 +127,14 @@ const ChatWidget = () => {
         `Great question! Our automation solutions can save your business 20+ hours per week. Let me connect you with ${hero.name} to discuss your specific needs.`,
         `That's exactly the kind of project ${hero.name} excels at! He's built similar solutions for many clients. Want to learn more?`,
       ];
-      
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: responses[Math.floor(Math.random() * responses.length)],
         timestamp: new Date(),
       };
-      
+
       setTimeout(() => {
         setMessages((prev) => [...prev, aiMessage]);
         setIsLoading(false);
@@ -173,7 +173,7 @@ const ChatWidget = () => {
               {/* Pulse ring */}
               <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20" aria-hidden="true" />
               <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" aria-hidden="true" />
-              
+
               {/* Notification dot */}
               <span className="absolute -top-0.5 -right-0.5 sm:top-0 sm:right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-accent rounded-full border-2 border-background flex items-center justify-center" aria-hidden="true">
                 <Sparkles className="w-1.5 h-1.5 sm:w-2 sm:h-2 text-accent-foreground" />
@@ -209,7 +209,7 @@ const ChatWidget = () => {
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
-                
+
                 <div className="relative">
                   <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
                     <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
@@ -217,7 +217,7 @@ const ChatWidget = () => {
                   {/* Online indicator */}
                   <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background" />
                 </div>
-                
+
                 <div>
                   <h3 className="font-semibold text-base">{chatSettings.botName}</h3>
                   <p className="text-xs text-muted-foreground">
@@ -225,7 +225,7 @@ const ChatWidget = () => {
                   </p>
                 </div>
               </div>
-              
+
               {/* Close button - Desktop only */}
               <Button
                 variant="ghost"
@@ -244,9 +244,9 @@ const ChatWidget = () => {
                   key={message.id}
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
+                  transition={{
                     duration: 0.3,
-                    delay: index === messages.length - 1 ? 0.1 : 0 
+                    delay: index === messages.length - 1 ? 0.1 : 0
                   }}
                   className={`flex gap-2 sm:gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                 >
@@ -255,20 +255,19 @@ const ChatWidget = () => {
                       <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                   )}
-                  
+
                   <div
-                    className={`max-w-[80%] sm:max-w-[75%] ${
-                      message.role === "user" 
-                        ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-br-md px-4 py-3 shadow-lg shadow-primary/20" 
+                    className={`max-w-[80%] sm:max-w-[75%] ${message.role === "user"
+                        ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-br-md px-4 py-3 shadow-lg shadow-primary/20"
                         : "bg-muted/80 backdrop-blur-sm text-foreground rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-border/30"
-                    }`}
+                      }`}
                   >
                     <p className="text-sm sm:text-[15px] leading-relaxed">{message.content}</p>
                     <p className={`text-[10px] sm:text-xs mt-1.5 ${message.role === "user" ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
                       {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </p>
                   </div>
-                  
+
                   {message.role === "user" && (
                     <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-secondary to-secondary/80 flex items-center justify-center flex-shrink-0 shadow-sm">
                       <User className="w-4 h-4 sm:w-5 sm:h-5 text-secondary-foreground" />
@@ -276,7 +275,7 @@ const ChatWidget = () => {
                   )}
                 </motion.div>
               ))}
-              
+
               {/* Typing indicator */}
               {isLoading && (
                 <motion.div
@@ -289,17 +288,17 @@ const ChatWidget = () => {
                   </div>
                   <div className="bg-muted/80 backdrop-blur-sm rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-border/30">
                     <div className="flex items-center gap-1.5">
-                      <motion.span 
+                      <motion.span
                         className="w-2 h-2 rounded-full bg-primary"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
                       />
-                      <motion.span 
+                      <motion.span
                         className="w-2 h-2 rounded-full bg-primary"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
                       />
-                      <motion.span 
+                      <motion.span
                         className="w-2 h-2 rounded-full bg-primary"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
@@ -311,69 +310,63 @@ const ChatWidget = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick Replies - Mobile friendly */}
-            {messages.length <= 1 && (
-              <div className="px-3 sm:px-4 pb-2">
-                <div className="flex flex-wrap gap-2">
-                  {["Services", "Pricing", "Contact"].map((quick) => (
-                    <motion.button
-                      key={quick}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        setInput(`Tell me about your ${quick.toLowerCase()}`);
-                        setTimeout(() => handleSend(), 100);
-                      }}
-                      className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-primary/10 hover:bg-primary/20 text-primary rounded-full border border-primary/20 transition-all active:scale-95"
-                    >
-                      {quick}
-                    </motion.button>
-                  ))}
+            {/* Input Area Group */}
+            <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl">
+              {/* Quick Replies - Integrated above input */}
+              {messages.length <= 1 && (
+                <div className="px-3 sm:px-4 pt-3 pb-1 overflow-x-auto no-scrollbar">
+                  <div className="flex gap-2 whitespace-nowrap">
+                    {["Services", "Pricing", "Contact"].map((quick) => (
+                      <motion.button
+                        key={quick}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          setInput(`Tell me about your ${quick.toLowerCase()}`);
+                          setTimeout(() => handleSend(), 100);
+                        }}
+                        className="px-3 py-1.5 text-xs sm:text-sm bg-primary/5 hover:bg-primary/10 text-primary border border-primary/20 rounded-full transition-colors"
+                      >
+                        {quick}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Input Field */}
+              <div className="p-3 sm:p-4">
+                <div className="relative flex items-center gap-2">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
+                    placeholder="Type a message..."
+                    className="flex-1 bg-muted/40 border-0 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/20 focus:bg-muted/60 transition-all placeholder:text-muted-foreground/50"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={handleSend}
+                    disabled={!input.trim() || isLoading}
+                    className="h-10 w-10 rounded-xl bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 shrink-0"
+                  >
+                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  </Button>
+                </div>
+                <div className="text-center mt-2">
+                  <span className="text-[10px] text-muted-foreground/40 font-medium tracking-wider uppercase">
+                    Powered by AI Assistant
+                  </span>
                 </div>
               </div>
-            )}
-
-            {/* Input Area - Mobile keyboard aware */}
-            <div className="p-3 sm:p-4 border-t border-border/50 bg-background/95 backdrop-blur-xl safe-area-bottom">
-              <div className="flex gap-2 sm:gap-3">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSend();
-                    }
-                  }}
-                  onFocus={() => {
-                    // Scroll to bottom when keyboard opens on mobile
-                    setTimeout(() => {
-                      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-                    }, 300);
-                  }}
-                  placeholder="Type a message..."
-                  className="flex-1 bg-muted/50 border border-border/50 rounded-full px-4 sm:px-5 py-3 sm:py-3.5 text-base focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted-foreground/60"
-                  style={{ fontSize: '16px' }} // Prevents zoom on iOS
-                />
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  onClick={handleSend}
-                  disabled={!input.trim() || isLoading}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none transition-all active:scale-95 flex-shrink-0"
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
-                  ) : (
-                    <Send className="w-5 h-5 sm:w-6 sm:h-6" />
-                  )}
-                </motion.button>
-              </div>
-              <p className="text-[10px] sm:text-xs text-muted-foreground/60 text-center mt-2 sm:mt-3">
-                Powered by AI Assistant
-              </p>
             </div>
           </motion.div>
         )}
