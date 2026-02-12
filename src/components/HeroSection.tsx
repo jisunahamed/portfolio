@@ -25,7 +25,6 @@ const HeroSection = () => {
   };
 
   return (
-  return (
     <section
       id="home"
       aria-labelledby="hero-heading"
