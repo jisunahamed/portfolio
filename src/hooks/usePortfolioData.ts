@@ -22,8 +22,8 @@ export const usePortfolioData = () => {
         setData(defaultPortfolioData);
       } else {
         const portfolioData: PortfolioData = {
-          hero: (dbData.hero as unknown as HeroData) || defaultPortfolioData.hero,
-          about: (dbData.about as unknown as AboutData) || defaultPortfolioData.about,
+          hero: { ...defaultPortfolioData.hero, ...((dbData.hero as unknown as HeroData) || {}) },
+          about: { ...defaultPortfolioData.about, ...((dbData.about as unknown as AboutData) || {}) },
           projects: (dbData.projects as unknown as Project[]) || defaultPortfolioData.projects,
           services: (dbData.services as unknown as Service[]) || defaultPortfolioData.services,
           contact: (dbData.contact as unknown as ContactData) || defaultPortfolioData.contact,
@@ -227,8 +227,8 @@ export const usePortfolioDataReadOnly = () => {
         setData(defaultPortfolioData);
       } else {
         const portfolioData: PortfolioData = {
-          hero: (dbData.hero as unknown as HeroData) || defaultPortfolioData.hero,
-          about: (dbData.about as unknown as AboutData) || defaultPortfolioData.about,
+          hero: { ...defaultPortfolioData.hero, ...((dbData.hero as unknown as HeroData) || {}) },
+          about: { ...defaultPortfolioData.about, ...((dbData.about as unknown as AboutData) || {}) },
           projects: (dbData.projects as unknown as Project[]) || defaultPortfolioData.projects,
           services: (dbData.services as unknown as Service[]) || defaultPortfolioData.services,
           contact: (dbData.contact as unknown as ContactData) || defaultPortfolioData.contact,
