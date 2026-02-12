@@ -191,11 +191,7 @@ const ChatWidget = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 w-full sm:w-[400px] sm:max-w-[calc(100vw-48px)] bg-background sm:rounded-2xl border-0 sm:border sm:border-border/50 shadow-2xl flex flex-col overflow-hidden"
-            style={{
-              height: '100dvh',
-              maxHeight: '100dvh',
-            }}
+            className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 w-full sm:w-[400px] sm:max-w-[calc(100vw-48px)] bg-background sm:rounded-2xl border-0 sm:border sm:border-border/50 shadow-2xl flex flex-col overflow-hidden h-[100dvh] sm:h-[600px] sm:max-h-[80vh]"
           >
             {/* Header - Mobile optimized */}
             <div className="flex items-center justify-between px-4 py-3 sm:p-4 border-b border-border/50 bg-gradient-to-r from-primary/10 via-background to-secondary/10 backdrop-blur-xl">
@@ -258,8 +254,8 @@ const ChatWidget = () => {
 
                   <div
                     className={`max-w-[80%] sm:max-w-[75%] ${message.role === "user"
-                        ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-br-md px-4 py-3 shadow-lg shadow-primary/20"
-                        : "bg-muted/80 backdrop-blur-sm text-foreground rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-border/30"
+                      ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-br-md px-4 py-3 shadow-lg shadow-primary/20"
+                      : "bg-muted/80 backdrop-blur-sm text-foreground rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-border/30"
                       }`}
                   >
                     <p className="text-sm sm:text-[15px] leading-relaxed">{message.content}</p>
