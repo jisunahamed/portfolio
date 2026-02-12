@@ -42,8 +42,14 @@ const ContactSection = () => {
     const bodyContent = `Hi Jisun,\n\nI'm interested in a ${serviceType} project.\nBudget Range: ${budgetRange}\n\nContext:\n[Describe your automation needs here]`;
     const body = encodeURIComponent(bodyContent);
 
-    // Use window.location.href for standard mailto behavior (avoids blocked popups)
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    // Create a temporary link element to trigger the mailto
+    // This is often more reliable than window.location.href or window.open
+    const link = document.createElement('a');
+    link.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
