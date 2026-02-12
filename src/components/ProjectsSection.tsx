@@ -105,16 +105,14 @@ const ProjectsSection = () => {
         </div>
 
         {/* View All Button */}
-        {publishedProjects.length > 4 && (
-          <div className="text-center mt-12">
-            <Link to="/projects">
-              <Button variant="glow" size="lg" aria-label="View all AI automation projects">
-                View All Projects
-                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-              </Button>
-            </Link>
-          </div>
-        )}
+        <div className="text-center mt-12">
+          <Link to="/projects">
+            <Button variant="glow" size="lg" aria-label="View all AI automation projects">
+              View All Projects
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Project Details Dialog */}

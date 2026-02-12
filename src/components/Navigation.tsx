@@ -1,22 +1,29 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
+  { name: "Home", href: "/#home" },
+  { name: "About", href: "/#about" },
   { name: "Projects", href: "/projects" },
-  { name: "Services", href: "#services" },
-  { name: "FAQ", href: "#faq" },
-  { name: "Contact", href: "#contact" },
+  { name: "Services", href: "/#services" },
+  { name: "FAQ", href: "/#faq" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 const Navigation = () => {
   const { data, isLoaded } = usePortfolioDataReadOnly();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data, isLoaded } = usePortfolioDataReadOnly();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,12 +33,26 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
+
+    if (href.startsWith("/#")) {
+      const hash = href.replace("/", "");
+      if (location.pathname !== "/") {
+        navigate("/");
+        // Wait for navigation then scroll
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          element?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        const element = document.querySelector(hash);
+        element?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (href.startsWith("/")) {
+      navigate(href);
+      window.scrollTo(0, 0);
+    }
   };
 
   if (!isLoaded) return null;
@@ -43,18 +64,18 @@ const Navigation = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-            ? "glass-card border-b border-border/50 backdrop-blur-xl"
-            : "bg-transparent"
+          ? "glass-card border-b border-border/50 backdrop-blur-xl"
+          : "bg-transparent"
           }`}
       >
         <nav aria-label="Main Navigation" className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <motion.a
-              href="#home"
+              href="/#home"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection("#home");
+                handleNavClick("/#home");
               }}
               className="text-xl font-bold font-mono text-gradient"
               whileHover={{ scale: 1.05 }}
@@ -72,9 +93,9 @@ const Navigation = () => {
                   href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
-                    scrollToSection(item.href);
+                    handleNavClick(item.href);
                   }}
-                  className="relative text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium"
+                  className="relative text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium cursor-pointer"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -99,7 +120,7 @@ const Navigation = () => {
               <Button
                 variant="glow"
                 size="sm"
-                onClick={() => scrollToSection("#contact")}
+                onClick={() => handleNavClick("/#contact")}
               >
                 Let's Talk
               </Button>
@@ -148,9 +169,9 @@ const Navigation = () => {
                     href={item.href}
                     onClick={(e) => {
                       e.preventDefault();
-                      scrollToSection(item.href);
+                      handleNavClick(item.href);
                     }}
-                    className="text-foreground hover:text-primary active:text-primary transition-colors duration-300 text-2xl font-semibold py-4 border-b border-border/30 flex items-center justify-between"
+                    className="text-foreground hover:text-primary active:text-primary transition-colors duration-300 text-2xl font-semibold py-4 border-b border-border/30 flex items-center justify-between cursor-pointer"
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.08 }}
@@ -169,7 +190,7 @@ const Navigation = () => {
                     variant="hero"
                     size="lg"
                     className="w-full text-lg py-6"
-                    onClick={() => scrollToSection("#contact")}
+                    onClick={() => handleNavClick("/#contact")}
                   >
                     Let's Talk
                   </Button>
