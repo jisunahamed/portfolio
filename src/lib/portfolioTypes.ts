@@ -17,11 +17,21 @@ export interface Skill {
   color: string;
 }
 
+export interface Experience {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+  order: number;
+}
+
 export interface AboutData {
   bio: string;
   mission: string;
+  photoUrl: string; // New: Specific image for About section
   skills: Skill[];
   stats: { label: string; value: string }[];
+  experience: Experience[]; // New: Editable timeline
 }
 
 export interface Project {

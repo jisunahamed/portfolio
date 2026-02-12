@@ -68,7 +68,31 @@ export const defaultPortfolioData: PortfolioData = {
         color: "secondary"
       }
     ],
-    mission: "My mission is to make AI accessible and practical for businesses of all sizes, from startups to enterprises. Through innovative automation solutions using n8n, custom chatbots, and intelligent integrations, I bridge the gap between cutting-edge AI technology and real-world business needs. Based in Bangladesh, I serve clients worldwide with a 24-hour response time and 98% satisfaction rate."
+    mission: "My mission is to make AI accessible and practical for businesses of all sizes, from startups to enterprises. Through innovative automation solutions using n8n, custom chatbots, and intelligent integrations, I bridge the gap between cutting-edge AI technology and real-world business needs. Based in Bangladesh, I serve clients worldwide with a 24-hour response time and 98% satisfaction rate.",
+    photoUrl: "https://i.ibb.co.com/7JGw9jHt/Picsart-25-10-15-13-11-26-300.jpg",
+    experience: [
+      {
+        id: "1",
+        year: "2024 - Present",
+        title: "AI Automation Specialist",
+        description: "Focusing 100% on n8n workflows and AI Agents for US/UK clients.",
+        order: 1
+      },
+      {
+        id: "2",
+        year: "2022 - 2023",
+        title: "Full Stack Developer",
+        description: "Built web applications and integrated APIs, laying the foundation for complex automation logic.",
+        order: 2
+      },
+      {
+        id: "3",
+        year: "2020 - 2021",
+        title: "WordPress Specialist",
+        description: "Mastered the art of CMS and plugin integrations.",
+        order: 3
+      }
+    ]
   },
   projects: [
     {

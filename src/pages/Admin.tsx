@@ -505,6 +505,10 @@ const Admin = () => {
                     <Textarea value={draftData.about.bio} onChange={(e) => updateDraftAbout({ ...draftData.about, bio: e.target.value })} rows={4} />
                   </div>
                   <div>
+                    <label className="text-sm text-muted-foreground">About Photo URL</label>
+                    <Input value={draftData.about.photoUrl || ""} onChange={(e) => updateDraftAbout({ ...draftData.about, photoUrl: e.target.value })} placeholder="Image URL for About section" />
+                  </div>
+                  <div>
                     <label className="text-sm text-muted-foreground">Mission</label>
                     <Textarea value={draftData.about.mission} onChange={(e) => updateDraftAbout({ ...draftData.about, mission: e.target.value })} rows={4} />
                   </div>
@@ -552,7 +556,7 @@ const Admin = () => {
                               newSkills[index] = { ...skill, icon: e.target.value };
                               updateDraftAbout({ ...draftData.about, skills: newSkills });
                             }}
-                            placeholder="Icon (e.g., Cpu, Globe)"
+                            placeholder="Icon"
                             className="w-32"
                           />
                           <select
@@ -578,6 +582,83 @@ const Admin = () => {
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Experience Management */}
+                  <div className="pt-4 border-t border-border">
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-sm font-medium">Experience Timeline</label>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const newExperience = {
+                            id: Date.now().toString(),
+                            year: "202X - Present",
+                            title: "New Role",
+                            description: "Description of role...",
+                            order: (draftData.about.experience?.length || 0) + 1
+                          };
+                          updateDraftAbout({
+                            ...draftData.about,
+                            experience: [...(draftData.about.experience || []), newExperience]
+                          });
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-1" /> Add Role
+                      </Button>
+                    </div>
+                    <div className="space-y-4">
+                      {(draftData.about.experience || []).sort((a, b) => a.order - b.order).map((exp, index) => (
+                        <div key={exp.id} className="p-3 border border-border rounded-lg space-y-2">
+                          <div className="flex gap-2">
+                            <Input
+                              value={exp.year}
+                              onChange={(e) => {
+                                const newExp = [...(draftData.about.experience || [])];
+                                const targetIndex = newExp.findIndex(x => x.id === exp.id);
+                                newExp[targetIndex] = { ...exp, year: e.target.value };
+                                updateDraftAbout({ ...draftData.about, experience: newExp });
+                              }}
+                              placeholder="Year (e.g. 2024-Present)"
+                              className="w-40"
+                            />
+                            <Input
+                              value={exp.title}
+                              onChange={(e) => {
+                                const newExp = [...(draftData.about.experience || [])];
+                                const targetIndex = newExp.findIndex(x => x.id === exp.id);
+                                newExp[targetIndex] = { ...exp, title: e.target.value };
+                                updateDraftAbout({ ...draftData.about, experience: newExp });
+                              }}
+                              placeholder="Job Title"
+                              className="flex-1"
+                            />
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              onClick={() => {
+                                const newExp = (draftData.about.experience || []).filter(x => x.id !== exp.id);
+                                updateDraftAbout({ ...draftData.about, experience: newExp });
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <Textarea
+                            value={exp.description}
+                            onChange={(e) => {
+                              const newExp = [...(draftData.about.experience || [])];
+                              const targetIndex = newExp.findIndex(x => x.id === exp.id);
+                              newExp[targetIndex] = { ...exp, description: e.target.value };
+                              updateDraftAbout({ ...draftData.about, experience: newExp });
+                            }}
+                            placeholder="Description"
+                            rows={2}
+                          />
                         </div>
                       ))}
                     </div>

@@ -53,27 +53,14 @@ const AboutSection = () => {
 
             {/* Experience Timeline */}
             <div className="relative border-l border-white/10 pl-8 ml-3 space-y-8 py-4">
-              {/* Timeline Item 1 */}
-              <div className="relative">
-                <div className="absolute -left-[39px] top-1 w-5 h-5 rounded-full bg-background border-2 border-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
-                <span className="text-xs font-mono text-primary mb-1 block">2024 - Present</span>
-                <h4 className="text-lg font-bold text-foreground">AI Automation Specialist</h4>
-                <p className="text-sm text-muted-foreground mt-1">Focusing 100% on n8n workflows and AI Agents for US/UK clients.</p>
-              </div>
-              {/* Timeline Item 2 */}
-              <div className="relative">
-                <div className="absolute -left-[39px] top-1 w-5 h-5 rounded-full bg-background border-2 border-white/20" />
-                <span className="text-xs font-mono text-muted-foreground mb-1 block">2022 - 2023</span>
-                <h4 className="text-lg font-bold text-foreground">Full Stack Developer</h4>
-                <p className="text-sm text-muted-foreground mt-1">Built web applications and integrated APIs, laying the foundation for complex automation logic.</p>
-              </div>
-              {/* Timeline Item 3 */}
-              <div className="relative">
-                <div className="absolute -left-[39px] top-1 w-5 h-5 rounded-full bg-background border-2 border-white/20" />
-                <span className="text-xs font-mono text-muted-foreground mb-1 block">2020 - 2021</span>
-                <h4 className="text-lg font-bold text-foreground">WordPress Specialist</h4>
-                <p className="text-sm text-muted-foreground mt-1">Mastered the art of CMS and plugin integrations.</p>
-              </div>
+              {(about.experience || []).sort((a, b) => a.order - b.order).map((exp) => (
+                <div key={exp.id} className="relative">
+                  <div className={`absolute -left-[39px] top-1 w-5 h-5 rounded-full bg-background border-2 ${exp.order === 1 ? 'border-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]' : 'border-white/20'}`} />
+                  <span className={`text-xs font-mono mb-1 block ${exp.order === 1 ? 'text-primary' : 'text-muted-foreground'}`}>{exp.year}</span>
+                  <h4 className="text-lg font-bold text-foreground">{exp.title}</h4>
+                  <p className="text-sm text-muted-foreground mt-1">{exp.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -87,7 +74,7 @@ const AboutSection = () => {
 
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center overflow-hidden relative z-10 glow-border">
                 <img
-                  src={hero.photoUrl}
+                  src={about.photoUrl || hero.photoUrl}
                   alt={hero.name}
                   className="w-full h-full object-cover rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
