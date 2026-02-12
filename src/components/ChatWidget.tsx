@@ -257,7 +257,10 @@ const ChatWidget = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-3 py-4 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-background via-background to-muted/20">
+            <div
+              className="flex-1 overflow-y-auto px-3 py-4 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-background via-background to-muted/20 overscroll-contain"
+              data-lenis-prevent
+            >
               {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
