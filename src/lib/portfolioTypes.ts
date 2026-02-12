@@ -30,8 +30,10 @@ export interface Project {
   description: string;
   fullDescription?: string;
   image: string;
+  workflowImageUrl?: string; // New: Visual of the n8n workflow
   youtubeUrl?: string;
   tags: string[];
+  results?: string[]; // New: "20h saved", "50% cost reduction"
   status: 'published' | 'draft';
   order: number;
 }
@@ -42,6 +44,7 @@ export interface Service {
   title: string;
   description: string;
   features: string[];
+  processSteps?: string[]; // New: "Analysis" -> "Build" -> "Deploy"
   order: number;
 }
 

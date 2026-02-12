@@ -3,6 +3,7 @@ import { ArrowDown, Sparkles, Zap, Bot } from "lucide-react";
 import { Button } from "./ui/button";
 import TypewriterText from "./TypewriterText";
 import ParticleBackground from "./ParticleBackground";
+import TechStackMarquee from "./TechStackMarquee";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 
 const HeroSection = () => {
@@ -24,182 +25,117 @@ const HeroSection = () => {
   };
 
   return (
+  return (
     <section
       id="home"
       aria-labelledby="hero-heading"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-bg"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden gradient-bg pt-20"
     >
-      {/* Particle Background */}
+      {/* Node Network Background */}
       <ParticleBackground />
 
       {/* Grid Overlay */}
       <div className="absolute inset-0 grid-overlay opacity-50" aria-hidden="true" />
-
-      {/* Gradient Mesh Overlay */}
       <div className="absolute inset-0 bg-gradient-mesh opacity-60" aria-hidden="true" />
 
-      {/* Floating Geometric Shapes - Hidden on mobile for cleaner look */}
-      <motion.div
-        className="absolute top-1/4 left-[10%] w-12 md:w-20 h-12 md:h-20 border border-primary/30 rounded-lg hidden sm:block"
-        animate={{ y: [0, -30, 0], rotate: [0, 45, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className="absolute bottom-1/3 right-[15%] w-10 md:w-16 h-10 md:h-16 border border-secondary/30 rounded-full hidden sm:block"
-        animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className="absolute top-1/3 right-[20%] w-8 md:w-12 h-8 md:h-12 bg-accent/10 rotate-45 hidden sm:block"
-        animate={{ y: [0, -20, 0], rotate: [45, 90, 45] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        aria-hidden="true"
-      />
-
       {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 relative z-10 pt-28 sm:pt-24">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 flex-grow flex items-center justify-center">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Profile Photo */}
+          {/* Profile Photo with Node Connection Effect */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="mb-4 sm:mb-8"
+            transition={{ duration: 0.5 }}
+            className="mb-8 relative inline-block"
           >
-            <div className="relative inline-block">
-              {/* Glowing ring */}
-              <div className="absolute -inset-1.5 sm:-inset-2 bg-gradient-to-r from-primary via-secondary to-accent rounded-full blur-md sm:blur-lg opacity-50 animate-pulse-glow" aria-hidden="true" />
-              <img
-                src={hero.photoUrl}
-                alt={`${hero.name} - AI Automation Specialist and n8n Expert`}
-                title={`${hero.name} - Professional AI Automation Specialist`}
-                loading="eager"
-                width="160"
-                height="160"
-                className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full object-cover border-3 sm:border-4 border-background shadow-2xl"
-              />
-            </div>
+            <div className="absolute -inset-4 bg-primary/20 rounded-full blur-xl animate-pulse" />
+            <img
+              src={hero.photoUrl}
+              alt={hero.name}
+              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-background/50 backdrop-blur shadow-2xl"
+            />
+            {/* Online Status Dot */}
+            <div className="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-background shadow-lg shadow-green-500/50" />
+
+            {/* Decorative Connection Lines */}
+            <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] -z-10 opacity-30 pointer-events-none" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" className="text-primary animate-spin-slow" />
+            </svg>
           </motion.div>
 
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass-card border border-primary/30 mb-4 sm:mb-6"
-          >
-            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" aria-hidden="true" />
-            <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-              Available for new projects
-            </span>
-          </motion.div>
-
-          {/* Main Heading - SEO H1 */}
+          {/* Main Heading */}
           <motion.h1
-            id="hero-heading"
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-4 sm:mb-6"
+            transition={{ delay: 0.2 }}
+            className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="text-foreground">Hi, I'm </span>
             <span className="text-gradient glitch-text" data-text={hero.name}>
               {hero.name}
             </span>
-            <span className="sr-only"> - AI Automation Specialist and n8n Expert</span>
           </motion.h1>
 
-          {/* Animated Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="text-base sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-6 sm:mb-8 font-light"
+          {/* Terminal Style Subtitle */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-black/40 border border-primary/20 backdrop-blur-md mb-8 font-mono text-sm sm:text-base text-primary shadow-lg shadow-primary/5"
           >
+            <span className="text-green-500">➜</span>
+            <span className="text-blue-400">~</span>
+            <span className="text-muted-foreground">exec</span>
             <TypewriterText
               texts={[
-                hero.subtitle,
-                "AI Automation Specialist",
-                "n8n Workflow Expert",
-                "Transforming Ideas into Automation",
+                "n8n_workflow_automation.exe",
+                "build_ai_agents.py",
+                "scale_business_logic.sh",
+                "integrate_apis.js"
               ]}
-              className="text-gradient font-medium"
+              className="text-primary font-bold"
             />
-          </motion.p>
+            <span className="animate-pulse">_</span>
+          </motion.div>
 
           {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             {hero.description}
           </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
+            transition={{ delay: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            role="group"
-            aria-label="Call to action buttons"
           >
-            <Button variant="hero" size="xl" onClick={scrollToContact} className="group">
-              <Bot className="w-5 h-5 group-hover:rotate-12 transition-transform" aria-hidden="true" />
+            <Button variant="hero" size="xl" onClick={scrollToContact} className="group min-w-[200px]">
+              <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
               {hero.ctaPrimary}
             </Button>
-            <Button variant="glow" size="xl" onClick={() => {
-              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-            }}>
-              <Zap className="w-5 h-5" aria-hidden="true" />
+            <Button variant="outline" size="xl" onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })} className="min-w-[200px] border-primary/20 hover:bg-primary/5">
+              <Zap className="w-5 h-5 mr-2" />
               {hero.ctaSecondary}
             </Button>
-          </motion.div>
-
-          {/* Tech Stack Preview */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="mt-6 sm:mt-16 mb-16 sm:mb-0 flex flex-wrap justify-center gap-2 sm:gap-4 px-2"
-            role="list"
-            aria-label="Technology expertise"
-          >
-            {hero.techStack.map((tech) => (
-              <span
-                key={tech}
-                role="listitem"
-                className="skill-badge text-xs sm:text-sm px-2.5 sm:px-4 py-1.5 sm:py-2"
-              >
-                {tech}
-              </span>
-            ))}
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll Indicator - Hidden on mobile to avoid overlap */}
-      <motion.button
+      {/* Tech Stack Marquee (Bottom) */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 cursor-pointer hidden sm:flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-        onClick={scrollToAbout}
-        aria-label="Scroll to about section"
+        transition={{ delay: 1 }}
+        className="relative z-10 w-full mt-auto"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <ArrowDown className="w-5 h-5" aria-hidden="true" />
-        </motion.div>
-      </motion.button>
+        <TechStackMarquee />
+      </motion.div>
     </section>
   );
 };

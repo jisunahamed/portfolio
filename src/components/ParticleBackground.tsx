@@ -34,7 +34,7 @@ const ParticleBackground = () => {
         events: {
           onHover: {
             enable: !isLowPower,
-            mode: "grab",
+            mode: "grab", // Stick to cursor like active connections
           },
           resize: {
             enable: true,
@@ -42,23 +42,28 @@ const ParticleBackground = () => {
         },
         modes: {
           grab: {
-            distance: 140,
+            distance: 180,
             links: {
-              opacity: 0.5,
+              opacity: 0.8,
+              color: "hsl(var(--primary))",
             },
           },
         },
       },
       particles: {
         color: {
-          value: ["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--accent))"],
+          value: "hsl(var(--primary))", // Unified node color
         },
         links: {
           color: "hsl(var(--primary))",
-          distance: 150,
+          distance: 180, // Longer connections
           enable: !isLowPower,
-          opacity: 0.12,
+          opacity: 0.2, // Subtle lines
           width: 1,
+          triangles: {
+            enable: true,
+            opacity: 0.05, // Faint web effect
+          }
         },
         move: {
           direction: "none",
@@ -66,8 +71,8 @@ const ParticleBackground = () => {
           outModes: {
             default: "bounce",
           },
-          random: true,
-          speed: isLowPower ? 0.45 : 0.8,
+          random: false,
+          speed: isLowPower ? 0.3 : 0.6, // Slower, more deliberate movement
           straight: false,
         },
         number: {
@@ -76,21 +81,16 @@ const ParticleBackground = () => {
             width: 1920,
             height: 1080,
           },
-          value: reducedMotion ? 28 : isCoarsePointer ? 45 : 80,
+          value: reducedMotion ? 30 : isCoarsePointer ? 50 : 90,
         },
         opacity: {
-          value: { min: 0.1, max: 0.5 },
-          animation: {
-            enable: !isLowPower,
-            speed: 0.5,
-            sync: false,
-          },
+          value: { min: 0.3, max: 0.7 },
         },
         shape: {
-          type: "circle",
+          type: "circle", // Nodes
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 2, max: 4 }, // Slightly larger nodes
         },
       },
       detectRetina: true,
