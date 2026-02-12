@@ -90,23 +90,46 @@ const ChatWidget = () => {
     // Check if webhook URL is configured
     if (chatSettings.webhookUrl) {
       try {
+        // n8n Webhook structure
+        const payload = {
+          input: input.trim(),
+          sessionId: getSessionId(),
+          timestamp: new Date().toISOString(),
+          // Legacy support for some workflow versions
+          message: input.trim(),
+          chatInput: input.trim()
+        };
+
         const response = await fetch(chatSettings.webhookUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json"
           },
-          body: JSON.stringify({
-            message: input.trim(),
-            sessionId: getSessionId(),
-            timestamp: new Date().toISOString(),
-          }),
+          body: JSON.stringify(payload),
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
+
+        // Handle various n8n response formats
+        const replyContent =
+          data.output ||
+          data.text ||
+          data.response ||
+          data.reply ||
+          data.message ||
+          (Array.isArray(data) && data[0]?.output) ||
+          (Array.isArray(data) && data[0]?.text) ||
+          "Received response from n8n";
+
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
-          role: "assistant",
-          content: data.reply || data.response || data.message || "I received your message!",
+          role: "assistant", // "assistant" matches the Message interface (was "ai" in some logic?)
+          content: typeof replyContent === 'string' ? replyContent : JSON.stringify(replyContent),
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, aiMessage]);
