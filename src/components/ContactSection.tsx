@@ -42,8 +42,8 @@ const ContactSection = () => {
     const bodyContent = `Hi Jisun,\n\nI'm interested in a ${serviceType} project.\nBudget Range: ${budgetRange}\n\nContext:\n[Describe your automation needs here]`;
     const body = encodeURIComponent(bodyContent);
 
-    // Use window.open with _blank to reliably trigger mail client
-    window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
+    // Use window.location.href for standard mailto behavior (avoids blocked popups)
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   return (
