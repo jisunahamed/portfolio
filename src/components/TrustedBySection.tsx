@@ -9,10 +9,10 @@ const TrustedBySection = () => {
     if (clients.length === 0) return null;
 
     // Duplicate clients for seamless infinite scroll
-    const marqueeClients = [...clients, ...clients, ...clients];
+    const marqueeClients = [...clients, ...clients, ...clients, ...clients];
 
     return (
-        <section className="py-20 border-y border-white/5 bg-black/40 backdrop-blur-md relative overflow-hidden group/section">
+        <section className="py-24 border-y border-white/5 bg-black/40 backdrop-blur-md relative overflow-hidden group/section">
             {/* Ambient Background Glow */}
             <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-0 group-hover/section:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -47,7 +47,7 @@ const TrustedBySection = () => {
                                     href={client.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group relative flex items-center justify-center min-w-[140px] opacity-40 hover:opacity-100 transition-all duration-500 grayscale hover:grayscale-0"
+                                    className="group relative flex items-center justify-center min-w-[140px] transition-all duration-500"
                                     whileHover={{ scale: 1.1, filter: "brightness(1.2)" }}
                                     title={`Visit ${client.name}`}
                                 >
