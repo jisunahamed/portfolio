@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, X, Youtube } from "lucide-react";
+import { ArrowUpRight, X, Youtube, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 import { Project } from "@/lib/portfolioTypes";
@@ -15,7 +15,7 @@ import {
 const ProjectsSection = () => {
   const { data } = usePortfolioDataReadOnly();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  
+
   const publishedProjects = data.projects
     .filter((p) => p.status === "published")
     .sort((a, b) => a.order - b.order);
@@ -51,8 +51,8 @@ const ProjectsSection = () => {
               <div className="glass-card rounded-xl sm:rounded-2xl overflow-hidden glow-border h-full transition-transform duration-300 hover:scale-[1.02]">
                 {/* Project Image */}
                 <div className="relative aspect-video overflow-hidden">
-                  <img 
-                    src={project.image} 
+                  <img
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -121,8 +121,8 @@ const ProjectsSection = () => {
             <div className="relative">
               {/* Hero Image with gradient overlay */}
               <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-                <img 
-                  src={selectedProject.image} 
+                <img
+                  src={selectedProject.image}
                   alt={selectedProject.title}
                   className="w-full h-full object-cover"
                 />
@@ -137,7 +137,7 @@ const ProjectsSection = () => {
                     {selectedProject.title}
                   </DialogTitle>
                 </DialogHeader>
-                
+
                 {/* Tech Tags */}
                 <div className="flex flex-wrap gap-2 mb-6" role="list" aria-label="Technologies used">
                   {selectedProject.tags.map((tag, index) => (
@@ -177,9 +177,43 @@ const ProjectsSection = () => {
                 <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-6" />
 
                 {/* Full Description */}
-                <DialogDescription className="text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                <DialogDescription className="text-base text-foreground/85 leading-relaxed whitespace-pre-line mb-8">
                   {selectedProject.fullDescription || selectedProject.description}
                 </DialogDescription>
+
+                {/* Workflow & Results Visuals */}
+                {(selectedProject.workflowImageUrl || selectedProject.results) && (
+                  <div className="bg-muted/30 rounded-xl p-6 border border-border/50">
+                    <h4 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      Automation Impact
+                    </h4>
+
+                    {/* Results Grid */}
+                    {selectedProject.results && (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                        {selectedProject.results.map((result, idx) => (
+                          <div key={idx} className="bg-background/80 p-3 rounded-lg border border-border/50 text-center">
+                            <span className="block text-lg font-bold text-primary">{result.split(' ')[0]}</span>
+                            <span className="text-xs text-muted-foreground">{result.split(' ').slice(1).join(' ')}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Workflow Image */}
+                    {selectedProject.workflowImageUrl && (
+                      <div className="rounded-lg overflow-hidden border border-border/50 relative group cursor-zoom-in" onClick={() => window.open(selectedProject.workflowImageUrl, '_blank')}>
+                        <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm">Click to Zoom</div>
+                        <img
+                          src={selectedProject.workflowImageUrl}
+                          alt="n8n Workflow Diagram"
+                          className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
