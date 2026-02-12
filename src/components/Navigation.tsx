@@ -26,11 +26,20 @@ const Navigation = () => {
   const location = useLocation();
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // Simple debounce/throttle hybrid for better performance
+      if (timeoutId) return;
+      timeoutId = setTimeout(() => {
+        setIsScrolled(window.scrollY > 50);
+        timeoutId = undefined!;
+      }, 100);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleNavClick = (href: string) => {
