@@ -205,6 +205,36 @@ const Admin = () => {
     setHasChanges(true);
   };
 
+  const updateDraftClient = (id: string, updates: Partial<Client>) => {
+    if (!draftData) return;
+    const newClients = (draftData.clients || []).map((c) =>
+      c.id === id ? { ...c, ...updates } : c
+    );
+    setDraftData({ ...draftData, clients: newClients });
+    setHasChanges(true);
+  };
+
+  const addDraftClient = () => {
+    if (!draftData) return;
+    const newClient: Client = {
+      id: Date.now().toString(),
+      name: "New Client",
+      logo: "https://placehold.co/200x80/202020/FFF?text=LOGO",
+      url: "#",
+      visible: true,
+      order: (draftData.clients || []).length + 1,
+    };
+    setDraftData({ ...draftData, clients: [...(draftData.clients || []), newClient] });
+    setHasChanges(true);
+  };
+
+  const deleteDraftClient = (id: string) => {
+    if (!draftData) return;
+    const newClients = (draftData.clients || []).filter((c) => c.id !== id);
+    setDraftData({ ...draftData, clients: newClients });
+    setHasChanges(true);
+  };
+
   // Save all changes
   const handleSave = async () => {
     if (!draftData || !hasChanges) return;
@@ -951,6 +981,66 @@ const Admin = () => {
                     <label className="text-sm text-muted-foreground">Tagline</label>
                     <Input value={draftData.footer.tagline} onChange={(e) => updateDraftFooter({ ...draftData.footer, tagline: e.target.value })} />
                   </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "clients" && (
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold">Trusted By (Clients)</h2>
+                  <Button onClick={addDraftClient} className="w-full sm:w-auto">
+                    <Plus className="w-4 h-4 mr-2" />Add Client
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {(draftData.clients || []).map((client) => (
+                    <div key={client.id} className="p-3 sm:p-4 border border-border rounded-xl flex items-center gap-3">
+                      <div className="bg-white/10 p-2 rounded-lg w-16 h-10 flex items-center justify-center shrink-0">
+                        {client.logo ? <img src={client.logo} alt={client.name} className="max-w-full max-h-full" /> : <Building2 className="w-6 h-6 text-muted-foreground" />}
+                      </div>
+                      <div className="flex-1 min-w-0 grid gap-2">
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={client.name}
+                            onChange={(e) => updateDraftClient(client.id, { name: e.target.value })}
+                            placeholder="Client Name"
+                            className="font-medium"
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => updateDraftClient(client.id, { visible: !client.visible })}
+                            title={client.visible ? "Hide" : "Show"}
+                          >
+                            {client.visible ? <Eye className="w-4 h-4 text-green-400" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={client.logo}
+                            onChange={(e) => updateDraftClient(client.id, { logo: e.target.value })}
+                            placeholder="Logo URL"
+                            className="text-xs"
+                          />
+                          <Input
+                            value={client.url}
+                            onChange={(e) => updateDraftClient(client.id, { url: e.target.value })}
+                            placeholder="Website URL"
+                            className="text-xs"
+                          />
+                        </div>
+                      </div>
+                      <Button variant="destructive" size="icon" onClick={() => deleteDraftClient(client.id)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  {(draftData.clients || []).length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground border border-dashed border-border rounded-xl">
+                      No clients added yet.
+                    </div>
+                  )}
                 </div>
               </div>
             )}

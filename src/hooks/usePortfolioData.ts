@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { PortfolioData, HeroData, AboutData, Project, Service, ContactData, ChatSettings, FooterData, FAQCategory } from "@/lib/portfolioTypes";
+import { PortfolioData, HeroData, AboutData, Project, Service, ContactData, ChatSettings, FooterData, FAQCategory, Client } from "@/lib/portfolioTypes";
 import { defaultPortfolioData } from "@/lib/defaultPortfolioData";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
@@ -30,6 +30,7 @@ export const usePortfolioData = () => {
           chatSettings: (dbData.chat_settings as unknown as ChatSettings) || defaultPortfolioData.chatSettings,
           footer: (dbData.footer as unknown as FooterData) || defaultPortfolioData.footer,
           faq: ((dbData as any).faq as unknown as FAQCategory[]) || defaultPortfolioData.faq,
+          clients: ((dbData as any).clients as unknown as Client[]) || defaultPortfolioData.clients,
         };
         setData(portfolioData);
       }
@@ -42,7 +43,7 @@ export const usePortfolioData = () => {
   // Save data to Supabase
   const saveData = useCallback(async (newData: PortfolioData) => {
     setData(newData);
-    
+
     const { error } = await supabase
       .from('portfolio_data')
       .update({
@@ -54,6 +55,7 @@ export const usePortfolioData = () => {
         chat_settings: JSON.parse(JSON.stringify(newData.chatSettings)) as Json,
         footer: JSON.parse(JSON.stringify(newData.footer)) as Json,
         faq: JSON.parse(JSON.stringify(newData.faq)) as Json,
+        clients: JSON.parse(JSON.stringify(newData.clients)) as Json,
       } as any)
       .eq('id', 'main');
 
@@ -234,6 +236,7 @@ export const usePortfolioDataReadOnly = () => {
           chatSettings: (dbData.chat_settings as unknown as ChatSettings) || defaultPortfolioData.chatSettings,
           footer: (dbData.footer as unknown as FooterData) || defaultPortfolioData.footer,
           faq: ((dbData as any).faq as unknown as FAQCategory[]) || defaultPortfolioData.faq,
+          clients: ((dbData as any).clients as unknown as Client[]) || defaultPortfolioData.clients,
         };
         setData(portfolioData);
       }
