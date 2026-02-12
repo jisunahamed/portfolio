@@ -7,7 +7,7 @@ import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
+  { name: "Projects", href: "/projects" },
   { name: "Services", href: "#services" },
   { name: "FAQ", href: "#faq" },
   { name: "Contact", href: "#contact" },
@@ -42,11 +42,10 @@ const Navigation = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
             ? "glass-card border-b border-border/50 backdrop-blur-xl"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <nav aria-label="Main Navigation" className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
@@ -133,7 +132,7 @@ const Navigation = () => {
               className="fixed inset-0 bg-background/95 backdrop-blur-xl z-40 md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            
+
             {/* Menu Content */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}

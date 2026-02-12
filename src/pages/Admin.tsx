@@ -665,16 +665,28 @@ const Admin = () => {
                         <Textarea value={project.fullDescription || ""} onChange={(e) => updateDraftProject(project.id, { fullDescription: e.target.value })} placeholder="Full description (shown in popup)" rows={3} />
                         <Input value={project.youtubeUrl || ""} onChange={(e) => updateDraftProject(project.id, { youtubeUrl: e.target.value })} placeholder="YouTube Video URL (optional)" />
                         <Input value={project.tags.join(", ")} onChange={(e) => updateDraftProject(project.id, { tags: e.target.value.split(",").map(t => t.trim()) })} placeholder="Tags (comma separated)" />
-                        <div className="flex items-center gap-2">
-                          <label className="text-sm text-muted-foreground">Status:</label>
-                          <select
-                            value={project.status}
-                            onChange={(e) => updateDraftProject(project.id, { status: e.target.value as "published" | "draft" })}
-                            className="bg-background border border-border rounded px-2 py-1 text-sm"
-                          >
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                          </select>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <label className="text-sm text-muted-foreground">Status:</label>
+                            <select
+                              value={project.status}
+                              onChange={(e) => updateDraftProject(project.id, { status: e.target.value as "published" | "draft" })}
+                              className="bg-background border border-border rounded px-2 py-1 text-sm"
+                            >
+                              <option value="published">Published</option>
+                              <option value="draft">Draft</option>
+                            </select>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id={`featured-${project.id}`}
+                              checked={project.featured || false}
+                              onChange={(e) => updateDraftProject(project.id, { featured: e.target.checked })}
+                              className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                            />
+                            <label htmlFor={`featured-${project.id}`} className="text-sm text-muted-foreground cursor-pointer select-none">Feature on Home</label>
+                          </div>
                         </div>
                       </div>
                     </div>

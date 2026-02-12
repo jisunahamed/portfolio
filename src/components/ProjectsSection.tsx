@@ -18,7 +18,7 @@ const ProjectsSection = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const publishedProjects = data.projects
-    .filter((p) => p.status === "published")
+    .filter((p) => p.status === "published" && p.featured)
     .sort((a, b) => a.order - b.order);
 
   return (
