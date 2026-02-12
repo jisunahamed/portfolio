@@ -30,7 +30,7 @@ export const usePortfolioData = () => {
           chatSettings: (dbData.chat_settings as unknown as ChatSettings) || defaultPortfolioData.chatSettings,
           footer: (dbData.footer as unknown as FooterData) || defaultPortfolioData.footer,
           faq: ((dbData as any).faq as unknown as FAQCategory[]) || defaultPortfolioData.faq,
-          clients: ((dbData as any).clients as unknown as Client[]) || defaultPortfolioData.clients,
+          clients: ((dbData.about as any)?.clients as unknown as Client[]) || defaultPortfolioData.clients,
         };
         setData(portfolioData);
       }
@@ -48,14 +48,13 @@ export const usePortfolioData = () => {
       .from('portfolio_data')
       .update({
         hero: JSON.parse(JSON.stringify(newData.hero)) as Json,
-        about: JSON.parse(JSON.stringify(newData.about)) as Json,
+        about: { ...JSON.parse(JSON.stringify(newData.about)), clients: newData.clients } as Json,
         projects: JSON.parse(JSON.stringify(newData.projects)) as Json,
         services: JSON.parse(JSON.stringify(newData.services)) as Json,
         contact: JSON.parse(JSON.stringify(newData.contact)) as Json,
         chat_settings: JSON.parse(JSON.stringify(newData.chatSettings)) as Json,
         footer: JSON.parse(JSON.stringify(newData.footer)) as Json,
         faq: JSON.parse(JSON.stringify(newData.faq)) as Json,
-        clients: JSON.parse(JSON.stringify(newData.clients)) as Json,
       } as any)
       .eq('id', 'main');
 
@@ -236,7 +235,7 @@ export const usePortfolioDataReadOnly = () => {
           chatSettings: (dbData.chat_settings as unknown as ChatSettings) || defaultPortfolioData.chatSettings,
           footer: (dbData.footer as unknown as FooterData) || defaultPortfolioData.footer,
           faq: ((dbData as any).faq as unknown as FAQCategory[]) || defaultPortfolioData.faq,
-          clients: ((dbData as any).clients as unknown as Client[]) || defaultPortfolioData.clients,
+          clients: ((dbData.about as any)?.clients as unknown as Client[]) || defaultPortfolioData.clients,
         };
         setData(portfolioData);
       }

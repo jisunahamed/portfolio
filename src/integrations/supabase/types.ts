@@ -27,7 +27,6 @@ export type Database = {
           projects: Json
           services: Json
           updated_at: string
-          clients: Json
         }
         Insert: {
           about?: Json
@@ -41,7 +40,6 @@ export type Database = {
           projects?: Json
           services?: Json
           updated_at?: string
-          clients?: Json
         }
         Update: {
           about?: Json
@@ -55,7 +53,6 @@ export type Database = {
           projects?: Json
           services?: Json
           updated_at?: string
-          clients?: Json
         }
         Relationships: []
       }
