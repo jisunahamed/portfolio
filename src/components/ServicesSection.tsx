@@ -8,10 +8,12 @@ import {
   MessageSquare,
   Globe,
   Lightbulb,
+  Code,
+  Check,
 } from "lucide-react";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   Bot,
   Workflow,
   Plug,
@@ -20,11 +22,13 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   MessageSquare,
   Globe,
   Lightbulb,
+  Code,
 };
 
 const ServicesSection = () => {
   const { data } = usePortfolioDataReadOnly();
-  const services = data.services.sort((a, b) => a.order - b.order);
+  // Sort services by order
+  const services = [...data.services].sort((a, b) => a.order - b.order);
 
   return (
     <section id="services" aria-labelledby="services-heading" className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
@@ -52,8 +56,8 @@ const ServicesSection = () => {
           <div className="hidden lg:block absolute top-[100px] left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 -z-10" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4 relative" role="list">
-            {data.services.slice(0, 3).map((service, index) => {
-              const Icon = icons[service.icon as keyof typeof icons] || Code;
+            {services.slice(0, 3).map((service, index) => {
+              const Icon = icons[service.icon] || Code;
               return (
                 <div key={service.id} className="relative group">
                   {/* Connection Arrow (Desktop) */}
@@ -99,10 +103,10 @@ const ServicesSection = () => {
         </div>
 
         {/* Additional Services Grid (if any) */}
-        {data.services.length > 3 && (
+        {services.length > 3 && (
           <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.services.slice(3).map((service) => {
-              const Icon = icons[service.icon as keyof typeof icons] || Code;
+            {services.slice(3).map((service) => {
+              const Icon = icons[service.icon] || Code;
               return (
                 <div key={service.id} className="p-6 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors">
                   <div className="flex items-center gap-4 mb-4">
@@ -120,5 +124,4 @@ const ServicesSection = () => {
   );
 };
 
-
-
+export default ServicesSection;
