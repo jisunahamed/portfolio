@@ -37,9 +37,13 @@ const ContactSection = () => {
   const [budgetRange, setBudgetRange] = useState("$500 - $1k");
 
   const handleSmartContact = () => {
-    const subject = `Inquiry: ${serviceType} Project`;
-    const body = `Hi Jisun,%0D%0A%0D%0AI'm interested in a ${serviceType} project.%0D%0ABudget Range: ${budgetRange}%0D%0A%0D%0AContext:%0D%0A[Describe your automation needs here]`;
-    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
+    const email = contact?.email || "jisunahamed525@gmail.com"; // Fallback email
+    const subject = encodeURIComponent(`Inquiry: ${serviceType} Project`);
+    const bodyContent = `Hi Jisun,\n\nI'm interested in a ${serviceType} project.\nBudget Range: ${budgetRange}\n\nContext:\n[Describe your automation needs here]`;
+    const body = encodeURIComponent(bodyContent);
+
+    console.log("Opening mail client...", email);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   return (
