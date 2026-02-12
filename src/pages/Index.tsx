@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
+import AutomationDemo from "@/components/AutomationDemo";
 import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -27,6 +28,7 @@ const Index = () => {
     <main className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
       <HeroSection />
+      <AutomationDemo />
       <AboutSection />
       <ProjectsSection />
       <ServicesSection />
