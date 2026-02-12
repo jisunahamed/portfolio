@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare
+  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare, Building2, FileJson
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { PortfolioData, HeroData, AboutData, Project, Service, ContactData, ChatSettings, FooterData, FAQCategory } from "@/lib/portfolioTypes";
+import { PortfolioData, Project, Service, SocialLink, FAQQuestion, FAQCategory, Client } from "@/lib/portfolioTypes";
 
 type Tab = "hero" | "about" | "projects" | "services" | "contact" | "chat" | "footer" | "faq";
 

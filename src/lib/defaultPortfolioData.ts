@@ -290,5 +290,23 @@ export const defaultPortfolioData: PortfolioData = {
         }
       ]
     }
+  ],
+  clients: [
+    {
+      id: "1",
+      name: "WEMS",
+      logo: "https://wems.com.bd/wp-content/uploads/2023/06/wems-logo.png",
+      url: "https://wems.com.bd",
+      visible: true,
+      order: 1
+    },
+    {
+      id: "2",
+      name: "InmeTech",
+      logo: "https://res.cloudinary.com/dnqzmx3ag/image/upload/v1770831782/inmetech_uploads/vx0ub4xulurbhje7je6l.png",
+      url: "https://inmetech.com",
+      visible: true,
+      order: 2
+    }
   ]
 };

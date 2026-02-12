@@ -92,6 +92,15 @@ export interface AdminAuth {
   isLoggedIn: boolean;
 }
 
+export interface Client {
+  id: string;
+  name: string;
+  logo: string;
+  url: string;
+  visible: boolean;
+  order: number;
+}
+
 export interface PortfolioData {
   hero: HeroData;
   about: AboutData;
@@ -101,4 +110,5 @@ export interface PortfolioData {
   chatSettings: ChatSettings;
   footer: FooterData;
   faq: FAQCategory[];
+  clients: Client[];
 }

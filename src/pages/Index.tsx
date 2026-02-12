@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 // import AutomationDemo from "@/components/AutomationDemo"; // Temporarily commented out if it causes issues, but it should be fine. Wait, I added it in previous step.
 import AutomationDemo from "@/components/AutomationDemo";
 import ProcessSection from "@/components/ProcessSection";
+import TrustedBySection from "@/components/TrustedBySection";
 import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -32,6 +33,7 @@ const Index = () => {
       <HeroSection />
       <AutomationDemo />
       <ProcessSection />
+      <TrustedBySection />
       <AboutSection />
       <ProjectsSection />
       <ServicesSection />
