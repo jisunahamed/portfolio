@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, X, Youtube, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { usePortfolioDataReadOnly } from "@/hooks/usePortfolioData";
 import { Project } from "@/lib/portfolioTypes";
@@ -106,10 +107,12 @@ const ProjectsSection = () => {
         {/* View All Button */}
         {publishedProjects.length > 4 && (
           <div className="text-center mt-12">
-            <Button variant="glow" size="lg" aria-label="View all AI automation projects">
-              View All Projects
-              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-            </Button>
+            <Link to="/projects">
+              <Button variant="glow" size="lg" aria-label="View all AI automation projects">
+                View All Projects
+                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+              </Button>
+            </Link>
           </div>
         )}
       </div>
