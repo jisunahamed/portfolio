@@ -240,5 +240,55 @@ export const defaultPortfolioData: PortfolioData = {
     logoText: "<Jisun.AI />",
     copyright: "© 2025 Jisun Ahamed. All rights reserved."
   },
-  faq: []
+  faq: [
+    {
+      id: "services",
+      category: "Services",
+      icon: "Sparkles",
+      questions: [
+        {
+          question: "What exactly can you automate for my business?",
+          answer: "Almost any repetitive digital task. Common examples include: synchronizing data between apps (e.g., Airtable to QuickBooks), automatically qualifying leads from forms, scraping data from websites for market research, and building custom AI chatbots for customer support."
+        },
+        {
+          question: "Do you only work with n8n?",
+          answer: "n8n is my tool of choice for its power and flexibility, allowing for complex, self-hosted workflows. However, I also have experience with Make.com (formerly Integromat) and Zapier. I recommend n8n because it gives you full ownership of your data and workflows."
+        },
+        {
+          question: "Do I need to pay for software subscriptions?",
+          answer: "It depends on the complexity. For n8n, you can self-host it for roughly $20/month (vs $100s for Zapier). You will need to pay for the API usage of tools like OpenAI (ChatGPT) or Anthropic, but these are usually very affordable (often <$10/month for moderate use)."
+        }
+      ]
+    },
+    {
+      id: "process",
+      category: "Process",
+      icon: "Zap",
+      questions: [
+        {
+          question: "How long does it take to build a workflow?",
+          answer: "Simple automations (like a lead notification system) can be done in 1-2 days. Complex AI agents or full business logic integrations typically take 1-2 weeks, including testing and refinement."
+        },
+        {
+          question: "What happens if an automation breaks?",
+          answer: "I build robust error handling into every workflow. If something fails (e.g., an API goes down), you get an instant notification. I also offer a 30-day support window after handover to fix any bugs for free."
+        }
+      ]
+    },
+    {
+      id: "security",
+      category: "Data & Security",
+      icon: "Shield",
+      questions: [
+        {
+          question: "Is my data safe?",
+          answer: "Absolutely. With n8n self-hosting, your data never leaves your server. Unlike closed platforms where your data sits on their servers, you maintain 100% data sovereignty. I follow strict security best practices when handling API keys and credentials."
+        },
+        {
+          question: "Do you offer maintenance plans?",
+          answer: "Yes. After the initial 30-day support period, I offer retainer packages for ongoing monitoring, updates, and building new features as your business grows."
+        }
+      ]
+    }
+  ]
 };
