@@ -40,6 +40,8 @@ export default function EmailGateModal({
         setIsLoading(true);
 
         try {
+            console.log('📧 Tracking download for:', { pageId, fileId, email });
+
             // Track download in database
             await trackDownload.mutateAsync({
                 pageId,
@@ -47,21 +49,41 @@ export default function EmailGateModal({
                 email,
             });
 
-            // Get download URL
-            const path = fileUrl.split('/').slice(-2).join('/'); // Extract path from full URL
+            console.log('✅ Download tracked successfully');
+
+            // Get download URL - extract path from full URL
+            console.log('🔗 File URL:', fileUrl);
+
+            // Extract the storage path from the URL
+            // URL format: https://xxx.supabase.co/storage/v1/object/public/resource-files/path/to/file.pdf
+            const urlParts = fileUrl.split('/resource-files/');
+            const path = urlParts.length > 1 ? urlParts[1] : '';
+
+            console.log('📂 Extracted path:', path);
+
+            if (!path) {
+                throw new Error('Failed to extract file path from URL');
+            }
+
             const { url: signedUrl, error } = await getDownloadUrl(path);
 
+            console.log('🔐 Signed URL generated:', { signedUrl, error });
+
             if (error || !signedUrl) {
-                throw new Error('Failed to generate download link');
+                console.error('❌ Signed URL error:', error);
+                throw new Error(error?.message || 'Failed to generate download link');
             }
 
             // Auto download
+            console.log('⬇️ Starting download...');
             const link = document.createElement('a');
             link.href = signedUrl;
             link.download = fileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+
+            console.log('✅ Download initiated');
 
             setIsSuccess(true);
             setTimeout(() => {
@@ -70,8 +92,9 @@ export default function EmailGateModal({
                 setIsSuccess(false);
             }, 2000);
         } catch (error) {
-            console.error('Download error:', error);
-            alert('Download failed. Please try again.');
+            console.error('❌ Download error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            alert(`Download failed: ${errorMessage}\n\nPlease check the browser console for details.`);
         } finally {
             setIsLoading(false);
         }
