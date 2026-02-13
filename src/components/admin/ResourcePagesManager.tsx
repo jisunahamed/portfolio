@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Edit, Trash2, Eye, EyeOff, ExternalLink } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, ExternalLink, Upload as UploadIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     useResourcePages,
@@ -8,6 +8,7 @@ import {
     useDeleteResourcePage,
 } from '@/hooks/useResources';
 import type { ResourcePage } from '@/lib/resourceTypes';
+import ResourceFileUploader from './ResourceFileUploader';
 
 export default function ResourcePagesManager() {
     const { data: pages, isLoading } = useResourcePages();
@@ -17,6 +18,7 @@ export default function ResourcePagesManager() {
 
     const [isEditing, setIsEditing] = useState(false);
     const [editingPage, setEditingPage] = useState<ResourcePage | null>(null);
+    const [selectedPageForFiles, setSelectedPageForFiles] = useState<ResourcePage | null>(null);
 
     // Form state
     const [title, setTitle] = useState('');
@@ -40,6 +42,13 @@ export default function ResourcePagesManager() {
         setSlug(page.slug);
         setIsPublished(page.is_published);
         setIsEditing(true);
+        setSelectedPageForFiles(null); // Close file view when editing
+    };
+
+    const handleManageFiles = (page: ResourcePage) => {
+        setSelectedPageForFiles(page);
+        setIsEditing(false);
+        setEditingPage(null);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -169,6 +178,33 @@ export default function ResourcePagesManager() {
                 </form>
             )}
 
+            {/* File Upload Section - Shows when a page is selected */}
+            {selectedPageForFiles && !isEditing && (
+                <div className="glass-card p-6 rounded-xl border border-primary/20 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-lg font-semibold">📁 Manage Files</h3>
+                            <p className="text-sm text-muted-foreground">
+                                {selectedPageForFiles.title} • /resources/{selectedPageForFiles.slug}
+                            </p>
+                        </div>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setSelectedPageForFiles(null)}
+                        >
+                            Close
+                        </Button>
+                    </div>
+
+                    <ResourceFileUploader
+                        pageId={selectedPageForFiles.id}
+                        pageSlug={selectedPageForFiles.slug}
+                        files={[]}
+                    />
+                </div>
+            )}
+
             {/* Pages List */}
             <div className="space-y-3">
                 {pages?.length === 0 ? (
@@ -206,6 +242,17 @@ export default function ResourcePagesManager() {
                                 </div>
 
                                 <div className="flex items-center gap-1">
+                                    {/* Manage Files Button */}
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => handleManageFiles(page)}
+                                        title="Manage Files"
+                                        className="text-primary hover:text-primary hover:bg-primary/10"
+                                    >
+                                        <UploadIcon className="w-4 h-4" />
+                                    </Button>
+
                                     <Button
                                         size="sm"
                                         variant="ghost"
