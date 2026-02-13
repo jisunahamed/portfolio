@@ -7,13 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare, Building2, FileJson, Eye, EyeOff
+  Settings, LogOut, Save, Plus, Trash2, ArrowLeft, Download, Menu, X, HelpCircle, Upload, Home, User, FolderOpen, Briefcase, Mail, MessageSquare, Building2, FileJson, Eye, EyeOff, Package, BarChart3
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { PortfolioData, Project, Service, SocialLink, FAQQuestion, FAQCategory, Client, HeroData, AboutData, ContactData, ChatSettings, FooterData } from "@/lib/portfolioTypes";
+import ResourcePagesManager from "@/components/admin/ResourcePagesManager";
+import DownloadsDashboard from "@/components/admin/DownloadsDashboard";
 
-type Tab = "hero" | "about" | "projects" | "services" | "contact" | "chat" | "footer" | "faq";
+type Tab = "hero" | "about" | "projects" | "services" | "contact" | "chat" | "footer" | "faq" | "resources" | "analytics";
 
 // Validation schemas
 const loginSchema = z.object({
@@ -357,6 +359,8 @@ const Admin = () => {
     { id: "chat", label: "Chat Settings", icon: MessageSquare },
     { id: "footer", label: "Footer", icon: Settings },
     { id: "clients", label: "Clients", icon: Building2 },
+    { id: "resources", label: "Resources", icon: Package },
+    { id: "analytics", label: "Analytics", icon: BarChart3 },
   ];
 
   const handleTabClick = (tabId: Tab) => {
@@ -1137,6 +1141,10 @@ const Admin = () => {
                 </div>
               </div>
             )}
+
+            {activeTab === "resources" && <ResourcePagesManager />}
+
+            {activeTab === "analytics" && <DownloadsDashboard />}
           </div>
         </div>
       </div>
