@@ -67,10 +67,10 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6"
+            className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6 flex flex-col sm:block gap-2"
           >
             <span className="text-foreground">Hi, I'm </span>
-            <span className="text-gradient glitch-text" data-text={hero.name}>
+            <span className="text-gradient glitch-text block sm:inline mt-1 sm:mt-0" data-text={hero.name}>
               {hero.name}
             </span>
           </motion.h1>
@@ -80,21 +80,25 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-black/40 border border-primary/20 backdrop-blur-md mb-8 font-mono text-sm sm:text-base text-primary shadow-lg shadow-primary/5"
+            className="inline-flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 rounded-lg bg-black/40 border border-primary/20 backdrop-blur-md mb-8 font-mono text-xs sm:text-base text-primary shadow-lg shadow-primary/5 max-w-full"
           >
-            <span className="text-green-500">➜</span>
-            <span className="text-blue-400">~</span>
-            <span className="text-muted-foreground">exec</span>
-            <TypewriterText
-              texts={[
-                "n8n_workflow_automation.exe",
-                "build_ai_agents.py",
-                "scale_business_logic.sh",
-                "integrate_apis.js"
-              ]}
-              className="text-primary font-bold"
-            />
-            <span className="animate-pulse">_</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-green-500">➜</span>
+              <span className="text-blue-400">~</span>
+              <span className="text-muted-foreground">exec</span>
+            </div>
+            <div className="flex items-center gap-1 min-w-0 truncate">
+              <TypewriterText
+                texts={[
+                  "n8n_workflow_automation.exe",
+                  "build_ai_agents.py",
+                  "scale_business_logic.sh",
+                  "integrate_apis.js"
+                ]}
+                className="text-primary font-bold truncate"
+              />
+              <span className="animate-pulse">_</span>
+            </div>
           </motion.div>
 
           {/* Description */}
@@ -102,7 +106,7 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-muted-foreground text-base sm:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2"
           >
             {hero.description}
           </motion.p>
@@ -112,13 +116,13 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-4 sm:px-0"
           >
-            <Button variant="hero" size="xl" onClick={scrollToContact} className="group min-w-[200px]">
+            <Button variant="hero" size="xl" onClick={scrollToContact} className="group w-full sm:w-auto min-w-[200px]">
               <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
               {hero.ctaPrimary}
             </Button>
-            <Button variant="outline" size="xl" onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })} className="min-w-[200px] border-primary/20 hover:bg-primary/5">
+            <Button variant="outline" size="xl" onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })} className="w-full sm:w-auto min-w-[200px] border-primary/20 hover:bg-primary/5">
               <Zap className="w-5 h-5 mr-2" />
               {hero.ctaSecondary}
             </Button>
