@@ -74,14 +74,31 @@ export default function EmailGateModal({
                 throw new Error(error?.message || 'Failed to generate download link');
             }
 
-            // Auto download
-            console.log('⬇️ Starting download...');
+            // Force download using fetch + blob (prevents browser preview)
+            console.log('⬇️ Fetching file...');
+            const response = await fetch(signedUrl);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch file: ${response.statusText}`);
+            }
+
+            const blob = await response.blob();
+            console.log('📦 Blob created:', { size: blob.size, type: blob.type });
+
+            // Create blob URL and trigger download
+            const blobUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = signedUrl;
+            link.href = blobUrl;
             link.download = fileName;
+            link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
+
+            // Cleanup
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            }, 100);
 
             console.log('✅ Download initiated');
 
