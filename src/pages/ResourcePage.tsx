@@ -146,15 +146,17 @@ export default function ResourcePage() {
                                                 {/* Stats */}
                                                 <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                                                     {file.file_size && (
-                                                        <span className="flex items-center gap-1">
-                                                            📦 {formatFileSize(file.file_size)}
+                                                        <span className="flex items-center gap-1.5">
+                                                            <FileText className="w-3 h-3" />
+                                                            {formatFileSize(file.file_size)}
                                                         </span>
                                                     )}
                                                     {file.download_count > 0 && (
                                                         <>
                                                             <span>•</span>
-                                                            <span className="flex items-center gap-1">
-                                                                ⬇️ {file.download_count} downloads
+                                                            <span className="flex items-center gap-1.5 text-primary/80 font-medium">
+                                                                <Download className="w-3 h-3" />
+                                                                {file.download_count} {file.download_count === 1 ? 'download' : 'downloads'}
                                                             </span>
                                                         </>
                                                     )}
@@ -195,15 +197,17 @@ export default function ResourcePage() {
                                                     )}
                                                     <div className="flex items-center gap-3 md:gap-4 text-xs md:text-sm text-muted-foreground flex-wrap">
                                                         {file.file_size && (
-                                                            <span className="flex items-center gap-1">
-                                                                📦 {formatFileSize(file.file_size)}
+                                                            <span className="flex items-center gap-1.5">
+                                                                <FileText className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                                                {formatFileSize(file.file_size)}
                                                             </span>
                                                         )}
                                                         {file.download_count > 0 && (
                                                             <>
                                                                 <span>•</span>
-                                                                <span className="flex items-center gap-1">
-                                                                    ⬇️ {file.download_count} downloads
+                                                                <span className="flex items-center gap-1.5 text-primary/80 font-medium">
+                                                                    <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                                                    {file.download_count} {file.download_count === 1 ? 'download' : 'downloads'}
                                                                 </span>
                                                             </>
                                                         )}

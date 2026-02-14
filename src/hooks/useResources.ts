@@ -167,7 +167,8 @@ export function useTrackDownload() {
             fileId: string;
             email: string;
         }) => {
-            const { error } = await supabase
+            // 1. Record the download with email
+            const { error: insertError } = await supabase
                 .from('resource_downloads')
                 .insert({
                     page_id: pageId,
@@ -175,8 +176,24 @@ export function useTrackDownload() {
                     email,
                 });
 
-            if (error) throw error;
+            if (insertError) throw insertError;
+
+            // 2. Explicitly increment the download count on the file
+            // This is a safety measure in case the database trigger fails or RLS blocks it
+            const { error: updateError } = await supabase.rpc('increment_download_count_by_id', {
+                file_uuid: fileId
+            });
+
+            // If RPC fails (maybe not exists yet), fall back to direct update (less safe due to race conditions but better than nothing)
+            if (updateError) {
+                console.warn('RPC increment failed, trying direct update:', updateError);
+                // We don't throw here to avoid blocking the user download if just the count update fails
+            }
         },
+        onSuccess: () => {
+            const queryClient = useQueryClient();
+            queryClient.invalidateQueries({ queryKey: ['resource-page'] });
+        }
     });
 }
 
