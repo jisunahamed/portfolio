@@ -224,3 +224,24 @@ export function useResourceDownloads(pageId?: string) {
         },
     });
 }
+
+/**
+ * Delete a download record (admin only)
+ */
+export function useDeleteResourceDownload() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const { error } = await supabase
+                .from('resource_downloads')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['resource-downloads'] });
+        },
+    });
+}

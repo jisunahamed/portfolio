@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Download, Search, Filter } from 'lucide-react';
+import { Download, Search, Trash2, X, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useResourceDownloads, useResourcePages } from '@/hooks/useResources';
+import { useResourceDownloads, useResourcePages, useDeleteResourceDownload } from '@/hooks/useResources';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function DownloadsDashboard() {
     const { data: pages } = useResourcePages();
     const [selectedPageId, setSelectedPageId] = useState<string>('');
     const { data: downloads, isLoading } = useResourceDownloads(selectedPageId || undefined);
+    const deleteDownload = useDeleteResourceDownload();
     const [searchQuery, setSearchQuery] = useState('');
+    const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
     const filteredDownloads = downloads?.filter((d) =>
         d.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -33,6 +36,17 @@ export default function DownloadsDashboard() {
         link.href = url;
         link.download = `resource-downloads-${Date.now()}.csv`;
         link.click();
+    };
+
+    const handleDelete = async () => {
+        if (itemToDelete) {
+            try {
+                await deleteDownload.mutateAsync(itemToDelete);
+                setItemToDelete(null);
+            } catch (error) {
+                console.error("Failed to delete download record:", error);
+            }
+        }
     };
 
     return (
@@ -104,7 +118,7 @@ export default function DownloadsDashboard() {
                     filteredDownloads?.map((download) => (
                         <div
                             key={download.id}
-                            className="glass-card p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-colors"
+                            className="glass-card p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group"
                         >
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
@@ -117,14 +131,71 @@ export default function DownloadsDashboard() {
                                         <span className="truncate">{download.file?.file_name || 'N/A'}</span>
                                     </div>
                                 </div>
-                                <div className="text-xs text-muted-foreground whitespace-nowrap">
-                                    {formatRelativeTime(download.downloaded_at)}
+                                <div className="flex items-center gap-4">
+                                    <div className="text-xs text-muted-foreground whitespace-nowrap">
+                                        {formatRelativeTime(download.downloaded_at)}
+                                    </div>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        onClick={() => setItemToDelete(download.id)}
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     ))
                 )}
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {itemToDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setItemToDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="w-full max-w-md bg-card border border-border rounded-xl shadow-xl overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="p-6">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="p-3 rounded-full bg-red-500/10 text-red-500">
+                                        <AlertTriangle className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-bold">Delete Record?</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            Are you sure you want to delete this download record? This action cannot be undone.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end gap-3">
+                                    <Button variant="ghost" onClick={() => setItemToDelete(null)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        variant="destructive"
+                                        onClick={handleDelete}
+                                        disabled={deleteDownload.isPending}
+                                    >
+                                        {deleteDownload.isPending ? 'Deleting...' : 'Delete'}
+                                    </Button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
