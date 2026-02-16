@@ -157,6 +157,8 @@ export function useDeleteResourceFile() {
  * Track a download (insert email record)
  */
 export function useTrackDownload() {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async ({
             pageId,
@@ -191,7 +193,6 @@ export function useTrackDownload() {
             }
         },
         onSuccess: () => {
-            const queryClient = useQueryClient();
             queryClient.invalidateQueries({ queryKey: ['resource-page'] });
         }
     });
