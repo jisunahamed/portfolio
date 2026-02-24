@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import AllProjects from "./pages/AllProjects";
 import ResourcePage from "./pages/ResourcePage";
 import NotFound from "./pages/NotFound";
+import CustomPage from "./pages/CustomPage";
 
 import SmootherScroll from "@/components/SmootherScroll";
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/admin" element={<Admin />} />
             <Route path="/projects" element={<div className="font-sans antialiased"><AllProjects /></div>} />
             <Route path="/resources/:slug" element={<ResourcePage />} />
+            <Route path="/p/:slug" element={<CustomPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
