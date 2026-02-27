@@ -20,7 +20,7 @@ const ProjectsSection = () => {
   const categories = [
     { id: 'all', label: 'All' },
     { id: 'ai-automation', label: 'AI Automation' },
-    { id: 'hive-project', label: 'Hive Project' },
+    { id: 'vibe-project', label: 'Vibe Project' },
     { id: 'others', label: 'Others' },
   ];
 
@@ -39,7 +39,7 @@ const ProjectsSection = () => {
             My <span className="text-gradient">Projects</span> & Case Studies
           </h2>
           <p className="text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base px-2">
-            A selection of <strong>AI automation</strong>, <strong>Hive Project</strong>, and various solutions I've built.
+            A selection of <strong>AI automation</strong>, <strong>Vibe Project</strong>, and various solutions I've built.
           </p>
         </header>
 
@@ -48,7 +48,8 @@ const ProjectsSection = () => {
           {categories.filter(c => c.id !== 'all').map((category) => {
             const categoryProjects = data.projects
               .filter((p) => p.status === "published" && p.featured && p.category === category.id)
-              .sort((a, b) => a.order - b.order);
+              .sort((a, b) => a.order - b.order)
+              .slice(0, 2); // Show only 2 projects per category
 
             if (categoryProjects.length === 0) return null;
 

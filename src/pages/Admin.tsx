@@ -763,7 +763,7 @@ const Admin = () => {
                               className="bg-background border border-border rounded px-2 py-1 text-sm"
                             >
                               <option value="ai-automation">AI Automation</option>
-                              <option value="hive-project">Hive Project</option>
+                              <option value="vibe-project">Vibe Project</option>
                               <option value="others">Others</option>
                             </select>
                           </div>

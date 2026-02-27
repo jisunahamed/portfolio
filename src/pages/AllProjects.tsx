@@ -22,7 +22,7 @@ const AllProjects = () => {
     const categories = [
         { id: "all", label: "All" },
         { id: "ai-automation", label: "AI Automation" },
-        { id: "hive-project", label: "Hive Project" },
+        { id: "vibe-project", label: "Vibe Project" },
         { id: "others", label: "Others" },
     ];
 
