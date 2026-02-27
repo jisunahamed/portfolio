@@ -190,6 +190,18 @@ const ProjectsSection = () => {
                   {selectedProject.fullDescription || selectedProject.description}
                 </DialogDescription>
 
+                {/* Optional Project Link */}
+                {selectedProject.link && (
+                  <div className="mb-8">
+                    <Button className="w-full sm:w-auto gap-2 group/btn" size="lg" asChild>
+                      <a href={selectedProject.link} target="_blank" rel="noopener noreferrer">
+                        View Live Project
+                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                      </a>
+                    </Button>
+                  </div>
+                )}
+
                 {/* Workflow & Results Visuals */}
                 {(selectedProject.workflowImageUrl || selectedProject.results) && (
                   <div className="bg-muted/30 rounded-xl p-6 border border-border/50">
