@@ -17,9 +17,12 @@ const ProjectsSection = () => {
   const { data } = usePortfolioDataReadOnly();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const publishedProjects = data.projects
-    .filter((p) => p.status === "published" && p.featured)
-    .sort((a, b) => a.order - b.order);
+  const categories = [
+    { id: 'all', label: 'All' },
+    { id: 'ai-automation', label: 'AI Automation' },
+    { id: 'hive-project', label: 'Hive Project' },
+    { id: 'others', label: 'Others' },
+  ];
 
   return (
     <section id="projects" aria-labelledby="projects-heading" className="py-16 sm:py-24 md:py-32 relative">
@@ -33,83 +36,87 @@ const ProjectsSection = () => {
             Portfolio
           </span>
           <h2 id="projects-heading" className="section-heading mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl">
-            AI Automation <span className="text-gradient">Projects</span> & Case Studies
+            My <span className="text-gradient">Projects</span> & Case Studies
           </h2>
           <p className="text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base px-2">
-            A selection of <strong>n8n automation</strong>, <strong>chatbot development</strong>, and <strong>AI integration</strong> solutions I've built for clients across various industries.
+            A selection of <strong>AI automation</strong>, <strong>Hive Project</strong>, and various solutions I've built.
           </p>
         </header>
 
-        {/* Projects Grid */}
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8" role="list" aria-label="AI Automation project portfolio">
-          {publishedProjects.map((project) => (
-            <article
-              key={project.id}
-              role="listitem"
-              className="group cursor-pointer"
-              onClick={() => setSelectedProject(project)}
-            >
-              <div className="glass-card rounded-xl sm:rounded-2xl overflow-hidden glow-border h-full transition-transform duration-300 hover:scale-[1.02]">
-                {/* Project Image */}
-                <div className="relative aspect-video overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="text-foreground font-medium flex items-center gap-2">
-                      View Details
-                      <ArrowUpRight className="w-5 h-5" />
-                    </span>
-                  </div>
+        {/* Projects Grid by Category */}
+        <div className="space-y-20">
+          {categories.filter(c => c.id !== 'all').map((category) => {
+            const categoryProjects = data.projects
+              .filter((p) => p.status === "published" && p.featured && p.category === category.id)
+              .sort((a, b) => a.order - b.order);
+
+            if (categoryProjects.length === 0) return null;
+
+            return (
+              <div key={category.id} className="space-y-8">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-2xl font-bold text-foreground/90">{category.label}</h3>
+                  <div className="h-px flex-1 bg-gradient-to-r from-primary/30 to-transparent" />
                 </div>
 
-                {/* Project Info */}
-                <div className="p-4 sm:p-6">
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <h3 className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <motion.div
-                      initial={{ rotate: 0 }}
-                      whileHover={{ rotate: 45 }}
-                      className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"
-                      aria-hidden="true"
+                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                  {categoryProjects.map((project) => (
+                    <article
+                      key={project.id}
+                      className="group cursor-pointer"
+                      onClick={() => setSelectedProject(project)}
                     >
-                      <ArrowUpRight className="w-5 h-5" />
-                    </motion.div>
-                  </div>
+                      <div className="glass-card rounded-xl sm:rounded-2xl overflow-hidden glow-border h-full transition-transform duration-300 hover:scale-[1.02]">
+                        <div className="relative aspect-video overflow-hidden">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span className="text-foreground font-medium flex items-center gap-2">
+                              View Details
+                              <ArrowUpRight className="w-5 h-5" />
+                            </span>
+                          </div>
+                        </div>
 
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Tags */}
-                  <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        role="listitem"
-                        className="px-3 py-1 text-xs font-mono bg-primary/10 text-primary rounded-full border border-primary/20"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                        <div className="p-4 sm:p-6">
+                          <div className="flex items-start justify-between gap-4 mb-3">
+                            <h4 className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors">
+                              {project.title}
+                            </h4>
+                            <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          </div>
+                          <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-2">
+                            {project.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {project.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-3 py-1 text-xs font-mono bg-primary/10 text-primary rounded-full border border-primary/20"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </div>
-            </article>
-          ))}
+            );
+          })}
         </div>
 
         {/* View All Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-20">
           <Link to="/projects">
-            <Button variant="glow" size="lg" aria-label="View all AI automation projects">
-              View All Projects
-              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            <Button variant="glow" size="lg" className="px-8 shadow-xl">
+              See More Projects
+              <ArrowUpRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>

@@ -18,22 +18,20 @@ const AllProjects = () => {
     const { data } = usePortfolioDataReadOnly();
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
-    const [activeCategory, setActiveCategory] = useState("All");
-
-    // Get unique categories from projects
-    const categories = useMemo(() => {
-        const allTags = data.projects.flatMap(p => p.tags);
-        // Group similar tags or just use top level categories if available
-        // For now, let's use a manual list + "All" based on common tags
-        return ["All", "n8n", "Chatbot", "AI Integration", "Full Stack"];
-    }, [data.projects]);
+    const [activeCategory, setActiveCategory] = useState("all");
+    const categories = [
+        { id: "all", label: "All" },
+        { id: "ai-automation", label: "AI Automation" },
+        { id: "hive-project", label: "Hive Project" },
+        { id: "others", label: "Others" },
+    ];
 
     const filteredProjects = useMemo(() => {
         return data.projects
             .filter((project) => {
                 const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                     project.description.toLowerCase().includes(searchQuery.toLowerCase());
-                const matchesCategory = activeCategory === "All" || project.tags.some(tag => tag.toLowerCase().includes(activeCategory.toLowerCase()));
+                const matchesCategory = activeCategory === "all" || project.category === activeCategory;
                 return matchesSearch && matchesCategory;
             })
             .sort((a, b) => a.order - b.order);
@@ -79,14 +77,14 @@ const AllProjects = () => {
                     <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
                         {categories.map(category => (
                             <button
-                                key={category}
-                                onClick={() => setActiveCategory(category)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap border ${activeCategory === category
-                                        ? "bg-primary/10 text-primary border-primary/50 shadow-[0_0_10px_rgba(var(--primary),0.2)]"
-                                        : "bg-surface-elevated/50 text-muted-foreground border-transparent hover:bg-surface-elevated hover:text-foreground"
+                                key={category.id}
+                                onClick={() => setActiveCategory(category.id)}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap border ${activeCategory === category.id
+                                    ? "bg-primary/10 text-primary border-primary/50 shadow-[0_0_10px_rgba(var(--primary),0.2)]"
+                                    : "bg-surface-elevated/50 text-muted-foreground border-transparent hover:bg-surface-elevated hover:text-foreground"
                                     }`}
                             >
-                                {category}
+                                {category.label}
                             </button>
                         ))}
                     </div>

@@ -46,6 +46,8 @@ export interface Project {
   results?: string[]; // New: "20h saved", "50% cost reduction"
   status: 'published' | 'draft';
   featured?: boolean; // New: Selected for Home Page
+  category: 'ai-automation' | 'hive-project' | 'others'; // New: Project category
+  link?: string; // New: Live link to the project
   order: number;
 }
 

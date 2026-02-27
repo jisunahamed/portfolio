@@ -165,6 +165,7 @@ const Admin = () => {
       image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80",
       tags: [],
       status: "draft",
+      category: "others",
       order: draftData.projects.length + 1,
     };
     setDraftData({ ...draftData, projects: [...draftData.projects, newProject] });
@@ -751,8 +752,21 @@ const Admin = () => {
                         <Textarea value={project.description} onChange={(e) => updateDraftProject(project.id, { description: e.target.value })} placeholder="Short description (shown on card)" rows={2} />
                         <Textarea value={project.fullDescription || ""} onChange={(e) => updateDraftProject(project.id, { fullDescription: e.target.value })} placeholder="Full description (shown in popup)" rows={3} />
                         <Input value={project.youtubeUrl || ""} onChange={(e) => updateDraftProject(project.id, { youtubeUrl: e.target.value })} placeholder="YouTube Video URL (optional)" />
+                        <Input value={project.link || ""} onChange={(e) => updateDraftProject(project.id, { link: e.target.value })} placeholder="Project Live Link (optional)" />
                         <Input value={project.tags.join(", ")} onChange={(e) => updateDraftProject(project.id, { tags: e.target.value.split(",").map(t => t.trim()) })} placeholder="Tags (comma separated)" />
                         <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <label className="text-sm text-muted-foreground">Category:</label>
+                            <select
+                              value={project.category}
+                              onChange={(e) => updateDraftProject(project.id, { category: e.target.value as any })}
+                              className="bg-background border border-border rounded px-2 py-1 text-sm"
+                            >
+                              <option value="ai-automation">AI Automation</option>
+                              <option value="hive-project">Hive Project</option>
+                              <option value="others">Others</option>
+                            </select>
+                          </div>
                           <div className="flex items-center gap-2">
                             <label className="text-sm text-muted-foreground">Status:</label>
                             <select
