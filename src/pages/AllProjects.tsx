@@ -171,103 +171,105 @@ const AllProjects = () => {
 
             {/* Project Details Modal (Reused) */}
             <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none bg-background/95 backdrop-blur-xl">
-                    {selectedProject && (
-                        <div className="relative">
-                            <div className="relative aspect-video overflow-hidden rounded-t-lg bg-muted">
-                                <img
-                                    src={selectedProject.image}
-                                    alt={selectedProject.title}
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-                                <Button
-                                    size="icon"
-                                    variant="secondary"
-                                    className="absolute top-4 right-4 rounded-full bg-background/50 hover:bg-background backdrop-blur-md"
-                                    onClick={() => setSelectedProject(null)}
-                                >
-                                    <ArrowUpRight className="w-4 h-4 rotate-180" /> {/* Close icon visual placeholder using existing lucide */}
-                                </Button>
-                            </div>
+                <DialogContent className="max-w-4xl w-[95vw] md:w-full max-h-[90vh] p-0 gap-0 border-none bg-background/95 backdrop-blur-xl overflow-hidden flex flex-col">
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                        {selectedProject && (
+                            <div className="relative">
+                                <div className="relative aspect-video overflow-hidden rounded-t-lg bg-muted">
+                                    <img
+                                        src={selectedProject.image}
+                                        alt={selectedProject.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                                    <Button
+                                        size="icon"
+                                        variant="secondary"
+                                        className="absolute top-4 right-4 rounded-full bg-background/50 hover:bg-background backdrop-blur-md"
+                                        onClick={() => setSelectedProject(null)}
+                                    >
+                                        <ArrowUpRight className="w-4 h-4 rotate-180" /> {/* Close icon visual placeholder using existing lucide */}
+                                    </Button>
+                                </div>
 
-                            <div className="p-6 md:p-8 -mt-20 relative z-10">
-                                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
-                                    <div>
-                                        <DialogHeader>
-                                            <DialogTitle className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-                                                {selectedProject.title}
-                                            </DialogTitle>
-                                        </DialogHeader>
-                                        <div className="flex flex-wrap gap-2 mt-2">
-                                            {selectedProject.tags.map((tag) => (
-                                                <span key={tag} className="px-3 py-1 text-xs font-mono bg-primary/10 text-primary border border-primary/20 rounded-full">
-                                                    {tag}
-                                                </span>
-                                            ))}
+                                <div className="p-6 md:p-8 -mt-20 relative z-10">
+                                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                                        <div>
+                                            <DialogHeader>
+                                                <DialogTitle className="text-3xl md:text-4xl font-bold text-gradient mb-2">
+                                                    {selectedProject.title}
+                                                </DialogTitle>
+                                            </DialogHeader>
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                {selectedProject.tags.map((tag) => (
+                                                    <span key={tag} className="px-3 py-1 text-xs font-mono bg-primary/10 text-primary border border-primary/20 rounded-full">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid md:grid-cols-[2fr,1fr] gap-8">
+                                        <div className="space-y-6">
+                                            <DialogDescription className="text-base text-foreground/80 leading-relaxed whitespace-pre-line">
+                                                {selectedProject.fullDescription || selectedProject.description}
+                                            </DialogDescription>
+
+                                            {/* Results / Impact */}
+                                            {selectedProject.results && (
+                                                <div className="bg-muted/20 rounded-xl p-5 border border-border/50">
+                                                    <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-primary">Key Results</h4>
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        {selectedProject.results.map((result, idx) => (
+                                                            <div key={idx} className="bg-background/50 p-3 rounded-lg border border-border/30">
+                                                                <p className="font-semibold text-foreground">{result}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-6">
+                                            {selectedProject.link && (
+                                                <Button className="w-full gap-2" size="lg" asChild>
+                                                    <a href={selectedProject.link} target="_blank" rel="noopener noreferrer">
+                                                        View Live Project <ArrowUpRight className="w-4 h-4" />
+                                                    </a>
+                                                </Button>
+                                            )}
+
+                                            {selectedProject.youtubeUrl && (
+                                                <div className="rounded-xl overflow-hidden border border-border/50 shadow-lg">
+                                                    {/* Simple Youtube Embed Logic */}
+                                                    <iframe
+                                                        className="w-full aspect-video"
+                                                        src={`https://www.youtube.com/embed/${selectedProject.youtubeUrl.split('/').pop()}`}
+                                                        title="Project Demo"
+                                                        allowFullScreen
+                                                    />
+                                                </div>
+                                            )}
+
+                                            {selectedProject.workflowImageUrl && (
+                                                <div className="space-y-2">
+                                                    <h4 className="text-sm font-medium text-muted-foreground">Workflow Diagram</h4>
+                                                    <div className="rounded-xl overflow-hidden border border-border/50 cursor-zoom-in" onClick={() => window.open(selectedProject.workflowImageUrl, '_blank')}>
+                                                        <img
+                                                            src={selectedProject.workflowImageUrl}
+                                                            alt="Workflow"
+                                                            className="w-full h-auto hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="grid md:grid-cols-[2fr,1fr] gap-8">
-                                    <div className="space-y-6">
-                                        <DialogDescription className="text-base text-foreground/80 leading-relaxed whitespace-pre-line">
-                                            {selectedProject.fullDescription || selectedProject.description}
-                                        </DialogDescription>
-
-                                        {/* Results / Impact */}
-                                        {selectedProject.results && (
-                                            <div className="bg-muted/20 rounded-xl p-5 border border-border/50">
-                                                <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-primary">Key Results</h4>
-                                                <div className="grid grid-cols-2 gap-4">
-                                                    {selectedProject.results.map((result, idx) => (
-                                                        <div key={idx} className="bg-background/50 p-3 rounded-lg border border-border/30">
-                                                            <p className="font-semibold text-foreground">{result}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-6">
-                                        {selectedProject.link && (
-                                            <Button className="w-full gap-2" size="lg" asChild>
-                                                <a href={selectedProject.link} target="_blank" rel="noopener noreferrer">
-                                                    View Live Project <ArrowUpRight className="w-4 h-4" />
-                                                </a>
-                                            </Button>
-                                        )}
-
-                                        {selectedProject.youtubeUrl && (
-                                            <div className="rounded-xl overflow-hidden border border-border/50 shadow-lg">
-                                                {/* Simple Youtube Embed Logic */}
-                                                <iframe
-                                                    className="w-full aspect-video"
-                                                    src={`https://www.youtube.com/embed/${selectedProject.youtubeUrl.split('/').pop()}`}
-                                                    title="Project Demo"
-                                                    allowFullScreen
-                                                />
-                                            </div>
-                                        )}
-
-                                        {selectedProject.workflowImageUrl && (
-                                            <div className="space-y-2">
-                                                <h4 className="text-sm font-medium text-muted-foreground">Workflow Diagram</h4>
-                                                <div className="rounded-xl overflow-hidden border border-border/50 cursor-zoom-in" onClick={() => window.open(selectedProject.workflowImageUrl, '_blank')}>
-                                                    <img
-                                                        src={selectedProject.workflowImageUrl}
-                                                        alt="Workflow"
-                                                        className="w-full h-auto hover:scale-105 transition-transform duration-500"
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </DialogContent>
             </Dialog>
         </div>

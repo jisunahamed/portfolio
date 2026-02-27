@@ -125,119 +125,121 @@ const ProjectsSection = () => {
 
       {/* Project Details Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none bg-card/95 backdrop-blur-xl">
-          {selectedProject && (
-            <div className="relative">
-              {/* Hero Image with gradient overlay */}
-              <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-full object-cover"
-                />
-                {/* Gradient overlay at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-              </div>
-
-              {/* Content */}
-              <div className="p-6 sm:p-10 -mt-16 relative z-10">
-                <DialogHeader className="mb-4">
-                  <DialogTitle className="text-2xl sm:text-3xl">
-                    {selectedProject.title}
-                  </DialogTitle>
-                </DialogHeader>
-
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-2 mb-6" role="list" aria-label="Technologies used">
-                  {selectedProject.tags.map((tag, index) => (
-                    <motion.span
-                      key={tag}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05 }}
-                      role="listitem"
-                      className="px-3 py-1.5 text-xs font-mono bg-primary/15 text-primary rounded-full border border-primary/30 shadow-sm shadow-primary/10"
-                    >
-                      {tag}
-                    </motion.span>
-                  ))}
+        <DialogContent className="max-w-4xl w-[95vw] md:w-full max-h-[90vh] p-0 gap-0 border-none bg-card/95 backdrop-blur-xl overflow-hidden flex flex-col">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+            {selectedProject && (
+              <div className="relative">
+                {/* Hero Image with gradient overlay */}
+                <div className="relative aspect-video overflow-hidden rounded-t-2xl">
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Gradient overlay at bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
                 </div>
 
-                {/* YouTube Embed */}
-                {selectedProject.youtubeUrl && (() => {
-                  const match = selectedProject.youtubeUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-                  const videoId = match?.[1];
-                  return videoId ? (
-                    <div className="mb-6">
-                      <div className="relative aspect-video rounded-xl overflow-hidden border border-border">
-                        <iframe
-                          src={`https://www.youtube.com/embed/${videoId}`}
-                          title={`${selectedProject.title} video`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="absolute inset-0 w-full h-full"
-                        />
+                {/* Content */}
+                <div className="p-6 sm:p-10 -mt-16 relative z-10">
+                  <DialogHeader className="mb-4">
+                    <DialogTitle className="text-2xl sm:text-3xl">
+                      {selectedProject.title}
+                    </DialogTitle>
+                  </DialogHeader>
+
+                  {/* Tech Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6" role="list" aria-label="Technologies used">
+                    {selectedProject.tags.map((tag, index) => (
+                      <motion.span
+                        key={tag}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.05 }}
+                        role="listitem"
+                        className="px-3 py-1.5 text-xs font-mono bg-primary/15 text-primary rounded-full border border-primary/30 shadow-sm shadow-primary/10"
+                      >
+                        {tag}
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  {/* YouTube Embed */}
+                  {selectedProject.youtubeUrl && (() => {
+                    const match = selectedProject.youtubeUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+                    const videoId = match?.[1];
+                    return videoId ? (
+                      <div className="mb-6">
+                        <div className="relative aspect-video rounded-xl overflow-hidden border border-border">
+                          <iframe
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            title={`${selectedProject.title} video`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="absolute inset-0 w-full h-full"
+                          />
+                        </div>
                       </div>
+                    ) : null;
+                  })()}
+
+                  {/* Divider */}
+                  <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-6" />
+
+                  {/* Full Description */}
+                  <DialogDescription className="text-base text-foreground/85 leading-relaxed whitespace-pre-line mb-8">
+                    {selectedProject.fullDescription || selectedProject.description}
+                  </DialogDescription>
+
+                  {/* Optional Project Link */}
+                  {selectedProject.link && (
+                    <div className="mb-8">
+                      <Button className="w-full sm:w-auto gap-2 group/btn" size="lg" asChild>
+                        <a href={selectedProject.link} target="_blank" rel="noopener noreferrer">
+                          View Live Project
+                          <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                        </a>
+                      </Button>
                     </div>
-                  ) : null;
-                })()}
+                  )}
 
-                {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-6" />
+                  {/* Workflow & Results Visuals */}
+                  {(selectedProject.workflowImageUrl || selectedProject.results) && (
+                    <div className="bg-muted/30 rounded-xl p-6 border border-border/50">
+                      <h4 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        Automation Impact
+                      </h4>
 
-                {/* Full Description */}
-                <DialogDescription className="text-base text-foreground/85 leading-relaxed whitespace-pre-line mb-8">
-                  {selectedProject.fullDescription || selectedProject.description}
-                </DialogDescription>
+                      {/* Results Grid */}
+                      {selectedProject.results && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                          {selectedProject.results.map((result, idx) => (
+                            <div key={idx} className="bg-background/80 p-3 rounded-lg border border-border/50 text-center">
+                              <span className="block text-lg font-bold text-primary">{result.split(' ')[0]}</span>
+                              <span className="text-xs text-muted-foreground">{result.split(' ').slice(1).join(' ')}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
-                {/* Optional Project Link */}
-                {selectedProject.link && (
-                  <div className="mb-8">
-                    <Button className="w-full sm:w-auto gap-2 group/btn" size="lg" asChild>
-                      <a href={selectedProject.link} target="_blank" rel="noopener noreferrer">
-                        View Live Project
-                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-                      </a>
-                    </Button>
-                  </div>
-                )}
-
-                {/* Workflow & Results Visuals */}
-                {(selectedProject.workflowImageUrl || selectedProject.results) && (
-                  <div className="bg-muted/30 rounded-xl p-6 border border-border/50">
-                    <h4 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      Automation Impact
-                    </h4>
-
-                    {/* Results Grid */}
-                    {selectedProject.results && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                        {selectedProject.results.map((result, idx) => (
-                          <div key={idx} className="bg-background/80 p-3 rounded-lg border border-border/50 text-center">
-                            <span className="block text-lg font-bold text-primary">{result.split(' ')[0]}</span>
-                            <span className="text-xs text-muted-foreground">{result.split(' ').slice(1).join(' ')}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Workflow Image */}
-                    {selectedProject.workflowImageUrl && (
-                      <div className="rounded-lg overflow-hidden border border-border/50 relative group cursor-zoom-in" onClick={() => window.open(selectedProject.workflowImageUrl, '_blank')}>
-                        <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm">Click to Zoom</div>
-                        <img
-                          src={selectedProject.workflowImageUrl}
-                          alt="n8n Workflow Diagram"
-                          className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
+                      {/* Workflow Image */}
+                      {selectedProject.workflowImageUrl && (
+                        <div className="rounded-lg overflow-hidden border border-border/50 relative group cursor-zoom-in" onClick={() => window.open(selectedProject.workflowImageUrl, '_blank')}>
+                          <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm">Click to Zoom</div>
+                          <img
+                            src={selectedProject.workflowImageUrl}
+                            alt="n8n Workflow Diagram"
+                            className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </section>
