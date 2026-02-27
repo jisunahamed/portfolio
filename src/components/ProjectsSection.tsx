@@ -125,7 +125,7 @@ const ProjectsSection = () => {
 
       {/* Project Details Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none bg-card/95 backdrop-blur-xl">
           {selectedProject && (
             <div className="relative">
               {/* Hero Image with gradient overlay */}
@@ -140,7 +140,7 @@ const ProjectsSection = () => {
               </div>
 
               {/* Content */}
-              <div className="p-6 sm:p-8 -mt-16 relative z-10">
+              <div className="p-6 sm:p-10 -mt-16 relative z-10">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="text-2xl sm:text-3xl">
                     {selectedProject.title}

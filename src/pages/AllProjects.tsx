@@ -171,7 +171,7 @@ const AllProjects = () => {
 
             {/* Project Details Modal (Reused) */}
             <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 border-border/50 bg-background/95 backdrop-blur-xl">
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none bg-background/95 backdrop-blur-xl">
                     {selectedProject && (
                         <div className="relative">
                             <div className="relative aspect-video overflow-hidden rounded-t-lg bg-muted">
